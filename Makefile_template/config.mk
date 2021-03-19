@@ -21,6 +21,6 @@ PASSWORD=pes20
 
 # insert correct values
 EXERCISE_NO=
-MATNR=
+MATNR=3819525
 # Um der Speicherung Ihrer Daten zuzustimmen tragen Sie in das folgende Feld bitte 'yes' ein
-ICH_STIMME_DER_SPEICHERUNG_DER_DATE_ZU=
+ICH_STIMME_DER_SPEICHERUNG_DER_DATE_ZU=yes
