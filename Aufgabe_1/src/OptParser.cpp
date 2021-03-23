@@ -6,7 +6,8 @@ bool CmdLineOptParser::Parse(int argc, char* argv[]) {
 
     //iterate over all arguments and check them
     //only while result is not false
-    for(int i = 0; i < argc; i++) {
+    for(int i = 1; i < argc; i++) {
+        printf("argv[%i]: %s \n", i, argv[i]);
         char varName = 0;
         char* ptr_value = nullptr;
         
@@ -34,12 +35,11 @@ bool CmdLineOptParser::Parse(int argc, char* argv[]) {
                 }
 
             } else {
-                //check next argument
-                i++;
-                if(argv[i] == nullptr || !CmdLineOptChecker::isValue(argv[i])) {
-                    return false;
-                } else {
-                    ptr_value = (argv[i]);
+                //peek next argument
+                int nxt = i + 1;
+                if(argv[nxt] != nullptr && CmdLineOptChecker::isValue(argv[nxt])) {
+                    ptr_value = (argv[nxt]);
+                    i = nxt;
                 }
             }
         }
@@ -49,14 +49,18 @@ bool CmdLineOptParser::Parse(int argc, char* argv[]) {
             return false;
         }
     }
+
+    //no error -> SUCCESS
+    return true;
 }
 
 bool CmdLineOptParser::Option(const char c, const char* info) {
     //For Debugging: just print the content
     if(info == nullptr) {
         // no value
-        printf("Variable: %c = TRUE");
+        printf("Variable: %c = TRUE \n");
     } else {
-        printf("Variable: %c = %s", c, info);
+        printf("Variable: %c = %s \n", c, info);
     }
+    return true;
 }
