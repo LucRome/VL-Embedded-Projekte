@@ -13,7 +13,12 @@ public:
     //EOA: '\0' (End of Argument)
     static bool EOA(const char* arg);
 
+    // # of chars it takes to declare a Variable
+    const int varLength = 2;
+
 private:
+    //Letter: [A-Za-z]
     static bool isLetter(const char* arg);
+    //Number: [0-9]
     static bool isNumber(const char* arg);
 };
