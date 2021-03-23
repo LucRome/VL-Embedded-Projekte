@@ -22,6 +22,8 @@ bool CmdLineOptChecker::isValue(const char* arg) {
             arg++;
         }
     }
+
+    return result;
 }
 
 bool CmdLineOptChecker::isEquals(const char* arg) {
@@ -33,7 +35,7 @@ bool CmdLineOptChecker::EOA(const char* arg) {
 }
 
 bool CmdLineOptChecker::isLetter(const char* arg) {
-    return (arg != nullptr) && (*arg >= 'A' && *arg <= 'Z') || (*arg >= 'a' && *arg <= 'z');
+    return (arg != nullptr) && (((*arg >= 'A') && (*arg <= 'Z')) || (*arg >= 'a' && *arg <= 'z'));
 }
 
 bool CmdLineOptChecker::isNumber(const char* arg) {
