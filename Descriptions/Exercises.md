@@ -35,3 +35,5 @@ arg_Val : Value;
 
 ## Other Notes:
 * **Needs to catch when there are Spaces inside an arg!!!** 
+* Problems when there is a char* created behind the last arg but not used for the args (segmentation fault)
+* TODO: Unittests
