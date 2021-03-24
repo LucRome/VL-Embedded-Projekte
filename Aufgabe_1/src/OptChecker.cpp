@@ -27,7 +27,7 @@ bool CmdLineOptChecker::isValue(const char* arg) {
 }
 
 bool CmdLineOptChecker::isEquals(const char* arg) {
-    return (arg != nullptr) && (*arg == '=');
+    return (arg != nullptr) && ((*arg == '=') || (*arg == ' '));
 }
 
 bool CmdLineOptChecker::EOA(const char* arg) {

@@ -8,7 +8,7 @@ public:
     static bool isVariable(const char* arg);
     //Value: (Letter|Number)* '\0' (always to the end of the arg, otherwise error)
     static bool isValue(const char* arg);
-    //Equals: '='
+    //Equals: '=' | ' '
     static bool isEquals(const char* arg);
     //EOA: '\0' (End of Argument)
     static bool EOA(const char* arg);
