@@ -13,7 +13,7 @@ kann:
 Letter: [A-Za-z]
 Number: [0-9]
 Variable: '-'Letter
-Equals: '='
+Equals: '=' | ' ' //' ' can also occur in an arg (although it shouldn't)
 Value: (Letter | Number)*
 ```
 
