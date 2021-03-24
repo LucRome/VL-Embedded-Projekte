@@ -1,5 +1,6 @@
 #include "OptParser.h"
 #include <string>
+#include <stdio.h>
 
 int main()
 {
@@ -8,11 +9,19 @@ int main()
     char arg1[] = "-x";
     char arg2[] = "-y=as";
     char arg3[] = "-k";
+    // char arg4[] = "hello";
 
-    char* argv[] = {arg0, arg1, arg2, arg3};
+    printf("Controll: %s %s %s %s\n", arg0, arg1, arg2, arg3/*, arg4*/);
+
+    char* argv[] = {arg0, arg1, arg2, arg3/*, arg4*/};
 
     int argc = sizeof(argv)/sizeof(argv[0]);
 
     CmdLineOptParser cmdP = CmdLineOptParser();
-    cmdP.Parse(argc, argv);
+    
+    if (cmdP.Parse(argc, argv)) {
+        printf("success \n");
+    } else {
+        printf("error \n");
+    }
 }
