@@ -1,6 +1,7 @@
 #include "catch.hpp"
 
 #include "OptChecker.h"
+#include "OptParser.h"
 
 //////////////////////////////////////////////////////////
 //          CmdLineOptChecker
@@ -82,3 +83,69 @@ TEST_CASE("OptChecker::EOA(..)", "[OptChecker]") {
 //////////////////////////////////////////////////////////
 //          CmdLineOptParser
 //////////////////////////////////////////////////////////
+
+TEST_CASE("OptParser::Parse(..)", "[OptParser]") {
+    CmdLineOptParser parser = CmdLineOptParser();
+
+    //All argv start with "progname" (like real program)
+    SECTION("Correct:") {
+        {
+            char arg0[] = "progname";
+            char arg1[] = "-x";
+            char arg2[] = "-y";
+            char arg3[] = "val";
+            char* argv[] = {arg0, arg1, arg2, arg3};
+            int argc = sizeof(argv) / sizeof(argv[0]);
+            REQUIRE(parser.Parse(argc, argv));
+        }
+        {
+            char arg0[] = "progname";
+            char arg1[] = "-L";
+            char arg2[] = "90a";
+            char arg3[] = "-Z";
+            char arg4[] = "-K";
+            char* argv[] = {arg0, arg1, arg2, arg3, arg4};
+            int argc = sizeof(argv) / sizeof(argv[0]);
+            REQUIRE(parser.Parse(argc, argv));
+        }
+        {
+            char arg0[] = "progname";
+            char arg1[] = "-L 90a";
+            char arg2[] = "-Z=80";
+            char arg3[] = "-K";
+            char* argv[] = {arg0, arg1, arg2, arg3};
+            int argc = sizeof(argv) / sizeof(argv[0]);
+            REQUIRE(parser.Parse(argc, argv));
+        }
+    }
+    SECTION("Incorrect:") {
+        {
+            //Error: argv[1]
+            char arg0[] = "progname";
+            char arg1[] = "ld";
+            char arg2[] = "kv";
+            char arg3[] = "-x";
+            char* argv[] = {arg0, arg1, arg2, arg3};
+            int argc = sizeof(argv)/sizeof(argv[0]);
+            REQUIRE_FALSE(parser.Parse(argc, argv));
+        }
+        {
+            //Error: argv[2]
+            char arg0[] = "progname";
+            char arg1[] = "-x";
+            char arg2[] = "__AB";
+            char* argv[] = {arg0, arg1, arg2};
+            int argc = sizeof(argv)/sizeof(argv[0]);
+            REQUIRE_FALSE(parser.Parse(argc, argv));
+        }
+        {
+            //Error: argv[1]
+            char arg0[] = "progname";
+            char arg1[] = "-0";
+            char arg2[] = "AB";
+            char* argv[] = {arg0, arg1, arg2};
+            int argc = sizeof(argv)/sizeof(argv[0]);
+            REQUIRE_FALSE(parser.Parse(argc, argv));
+        }
+    }
+}
