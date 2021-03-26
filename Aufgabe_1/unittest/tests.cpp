@@ -14,10 +14,10 @@ TEST_CASE("OptChecker::isVariable(..)", "[OptChecker]") {
         char str3[] = "-A";
         char str4[] = "-Z";
         
-        REQUIRE(CmdLineOptChecker::isVariable(str1));
-        REQUIRE(CmdLineOptChecker::isVariable(str2));
-        REQUIRE(CmdLineOptChecker::isVariable(str3));
-        REQUIRE(CmdLineOptChecker::isVariable(str4));
+        REQUIRE_NOTHROW(CmdLineOptChecker::isVariable(str1));
+        REQUIRE_NOTHROW(CmdLineOptChecker::isVariable(str2));
+        REQUIRE_NOTHROW(CmdLineOptChecker::isVariable(str3));
+        REQUIRE_NOTHROW(CmdLineOptChecker::isVariable(str4));
     }
     SECTION("Incorrect:") {
         char str1[] = "-0";
@@ -35,8 +35,8 @@ TEST_CASE("OptChecker::isValue(..)", "[OptChecker]") {
         char str1[] = "hel0";
         char str2[] = "023ka";
 
-        REQUIRE(CmdLineOptChecker::isValue(str1));
-        REQUIRE(CmdLineOptChecker::isValue(str2));
+        REQUIRE_NOTHROW(CmdLineOptChecker::isValue(str1));
+        REQUIRE_NOTHROW(CmdLineOptChecker::isValue(str2));
     }
     SECTION("Incorrect:") {
         char str1[] = "-as";
@@ -54,8 +54,8 @@ TEST_CASE("OptChecker::isEquals(..)", "[OptChecker]") {
         char str1[] = "=";
         char str2[] = " ";
 
-        REQUIRE(CmdLineOptChecker::isEquals(str1));
-        REQUIRE(CmdLineOptChecker::isEquals(str2));
+        REQUIRE_NOTHROW(CmdLineOptChecker::isEquals(str1));
+        REQUIRE_NOTHROW(CmdLineOptChecker::isEquals(str2));
     }
     SECTION("Incorrect:") {
         char str1[] = "";
@@ -70,7 +70,7 @@ TEST_CASE("OptChecker::EOA(..)", "[OptChecker]") {
     SECTION("Correct:") {
         char str1[] = "a";
         char* eoa = str1 + 1;
-        REQUIRE(CmdLineOptChecker::EOA(eoa));
+        REQUIRE_NOTHROW(CmdLineOptChecker::EOA(eoa));
     }
     SECTION("Incorrect:") {
         char str1[] = "1";
@@ -96,7 +96,7 @@ TEST_CASE("OptParser::Parse(..)", "[OptParser]") {
             char arg3[] = "val";
             char* argv[] = {arg0, arg1, arg2, arg3};
             int argc = sizeof(argv) / sizeof(argv[0]);
-            REQUIRE(parser.Parse(argc, argv));
+            REQUIRE_NOTHROW(parser.Parse(argc, argv));
         }
         {
             char arg0[] = "progname";
@@ -106,7 +106,7 @@ TEST_CASE("OptParser::Parse(..)", "[OptParser]") {
             char arg4[] = "-K";
             char* argv[] = {arg0, arg1, arg2, arg3, arg4};
             int argc = sizeof(argv) / sizeof(argv[0]);
-            REQUIRE(parser.Parse(argc, argv));
+            REQUIRE_NOTHROW(parser.Parse(argc, argv));
         }
         {
             char arg0[] = "progname";
@@ -115,7 +115,7 @@ TEST_CASE("OptParser::Parse(..)", "[OptParser]") {
             char arg3[] = "-K";
             char* argv[] = {arg0, arg1, arg2, arg3};
             int argc = sizeof(argv) / sizeof(argv[0]);
-            REQUIRE(parser.Parse(argc, argv));
+            REQUIRE_NOTHROW(parser.Parse(argc, argv));
         }
     }
     SECTION("Incorrect:") {
