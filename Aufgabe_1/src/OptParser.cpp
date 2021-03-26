@@ -37,7 +37,7 @@ bool CmdLineOptParser::Parse(int argc, char* argv[]) {
             } else {
                 //peek next argument
                 int nxt = i + 1;
-                if(argv[nxt] != nullptr && CmdLineOptChecker::isValue(argv[nxt])) {
+                if(nxt < argc && argv[nxt] != nullptr && CmdLineOptChecker::isValue(argv[nxt])) {
                     ptr_value = (argv[nxt]);
                     i = nxt;
                 }
