@@ -11,11 +11,12 @@ int main()
     char arg3[] = "-k";
     // char arg4[] = "hello";
 
-    printf("Controll: %s %s %s %s\n", arg0, arg1, arg2, arg3/*, arg4*/);
+    printf("Controll: %s %s %s %s\n", arg0, arg1, arg2, arg3);
 
-    char* argv[] = {arg0, arg1, arg2, arg3/*, arg4*/};
+    char* argv[] = {arg0, arg1, arg2, arg3};
 
     int argc = sizeof(argv)/sizeof(argv[0]);
+    printf("argc: %i", argc);
 
     CmdLineOptParser cmdP = CmdLineOptParser();
     
