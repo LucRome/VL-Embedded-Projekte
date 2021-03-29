@@ -16,7 +16,7 @@ int main()
     char* argv[] = {arg0, arg1, arg2, arg3};
 
     int argc = sizeof(argv)/sizeof(argv[0]);
-    printf("argc: %i", argc);
+    printf("argc: %i\n", argc);
 
     CmdLineOptParser cmdP = CmdLineOptParser();
     
