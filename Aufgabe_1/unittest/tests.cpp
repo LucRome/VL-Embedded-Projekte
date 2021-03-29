@@ -7,7 +7,7 @@
 //          LiteralChecker
 //////////////////////////////////////////////////////////
 
-TEST_CASE("OptChecker::isVariable(..)", "[OptChecker]")
+TEST_CASE("LiteralChecker::isVariable(..)", "[LiteralChecker]")
 {
     SECTION("Correct:")
     {
@@ -33,7 +33,7 @@ TEST_CASE("OptChecker::isVariable(..)", "[OptChecker]")
     }
 }
 
-TEST_CASE("OptChecker::isValue(..)", "[OptChecker]")
+TEST_CASE("LiteralChecker::isValue(..)", "[LiteralChecker]")
 {
     SECTION("Correct:")
     {
@@ -55,7 +55,7 @@ TEST_CASE("OptChecker::isValue(..)", "[OptChecker]")
     }
 }
 
-TEST_CASE("OptChecker::isEquals(..)", "[OptChecker]")
+TEST_CASE("LiteralChecker::isEquals(..)", "[LiteralChecker]")
 {
     SECTION("Correct:")
     {
@@ -75,7 +75,7 @@ TEST_CASE("OptChecker::isEquals(..)", "[OptChecker]")
     }
 }
 
-TEST_CASE("OptChecker::EOA(..)", "[OptChecker]")
+TEST_CASE("LiteralChecker::EOA(..)", "[LiteralChecker]")
 {
     SECTION("Correct:")
     {
@@ -89,8 +89,6 @@ TEST_CASE("OptChecker::EOA(..)", "[OptChecker]")
         REQUIRE_FALSE(LiteralChecker::EOA(str1));
     }
 }
-
-// Maybe also test private fkt. of OptChecker
 
 //////////////////////////////////////////////////////////
 //          CmdLineOptParser
