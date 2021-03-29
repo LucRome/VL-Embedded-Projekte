@@ -1,43 +1,55 @@
 #include "OptParser.h"
-#include "OptChecker.h"
+#include "LiteralChecker.h"
 #include <stdio.h>
 
-bool CmdLineOptParser::Parse(int argc, char* argv[]) {
+bool CmdLineOptParser::Parse(int argc, char *argv[])
+{
 
     //iterate over all arguments and check them
     //only while result is not false
-    for(int i = 1; i < argc; i++) {
+    for (int i = 1; i < argc; i++)
+    {
         printf("argv[%i]: %s \n", i, argv[i]);
         char varName = 0;
-        char* ptr_value = nullptr;
-        
+        char *ptr_value = nullptr;
+
         //must start with Variable
-        if(argv[i] == nullptr || !CmdLineOptChecker::isVariable(argv[i])) {
+        if (argv[i] == nullptr || !LiteralChecker::isVariable(argv[i]))
+        {
             return false;
-        } else {
+        }
+        else
+        {
             //+ 1: '-'x (argv[i] points to '-' and x is needed)
             int offset = 1;
             varName = *(argv[i] + offset);
-            
+
             // get value
             offset = 2;
-            if(!CmdLineOptChecker::EOA(argv[i] + offset)) {
+            if (!LiteralChecker::EOA(argv[i] + offset))
+            {
                 //-> Value or Equals
-                
-                if(CmdLineOptChecker::isEquals(argv[i] + offset)) {
+
+                if (LiteralChecker::isEquals(argv[i] + offset))
+                {
                     offset++; //ignore Equals
                 }
 
-                if(!CmdLineOptChecker::isValue(argv[i] + offset)) {
+                if (!LiteralChecker::isValue(argv[i] + offset))
+                {
                     return false;
-                } else {
+                }
+                else
+                {
                     ptr_value = (argv[i] + offset);
                 }
-
-            } else {
+            }
+            else
+            {
                 //peek next argument
                 int nxt = i + 1;
-                if(nxt < argc && argv[nxt] != nullptr && CmdLineOptChecker::isValue(argv[nxt])) {
+                if (nxt < argc && argv[nxt] != nullptr && LiteralChecker::isValue(argv[nxt]))
+                {
                     ptr_value = (argv[nxt]);
                     i = nxt;
                 }
@@ -45,7 +57,8 @@ bool CmdLineOptParser::Parse(int argc, char* argv[]) {
         }
         //ptr_value should never be nullptr here (= error)
         bool optionSuccess = Option(varName, ptr_value);
-        if(!optionSuccess) {
+        if (!optionSuccess)
+        {
             return false;
         }
     }
@@ -54,12 +67,16 @@ bool CmdLineOptParser::Parse(int argc, char* argv[]) {
     return true;
 }
 
-bool CmdLineOptParser::Option(const char c, const char* info) {
+bool CmdLineOptParser::Option(const char c, const char *info)
+{
     //For Debugging: just print the content
-    if(info == nullptr) {
+    if (info == nullptr)
+    {
         // no value
         printf("Variable: %c = TRUE \n");
-    } else {
+    }
+    else
+    {
         printf("Variable: %c = %s \n", c, info);
     }
     return true;
