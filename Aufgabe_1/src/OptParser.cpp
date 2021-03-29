@@ -9,7 +9,6 @@ bool CmdLineOptParser::Parse(int argc, char *argv[])
     //only while result is not false
     for (int i = 1; i < argc; i++)
     {
-        printf("argv[%i]: %s \n", i, argv[i]);
         char varName = 0;
         char *ptr_value = nullptr;
 
