@@ -1,4 +1,4 @@
-//Checks whether the given chars* matches a given type
+//Checks whether the given char* matches a given type
 //TODO
 
 class LiteralChecker
