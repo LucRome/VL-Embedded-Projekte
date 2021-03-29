@@ -66,17 +66,7 @@ bool CmdLineOptParser::Parse(int argc, char *argv[])
     return true;
 }
 
-bool CmdLineOptParser::Option(const char c, const char *info)
+bool CmdLineOptParser::Option(const char, const char *)
 {
-    //For Debugging: just print the content
-    if (info == nullptr)
-    {
-        // no value
-        printf("Variable: %c = TRUE \n");
-    }
-    else
-    {
-        printf("Variable: %c = %s \n", c, info);
-    }
     return true;
 }
