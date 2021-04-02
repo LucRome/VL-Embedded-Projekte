@@ -9,4 +9,10 @@ namespace PrintfUtils {
     bool isSpecifier(const char* fmt);
     //End of string = '\0'
     bool EOS(const char* ptr_char);
+
+    enum class SpecifierType {
+        SignedInt, UnsignedInt, Char, String, Hexa, Binary, SkipFormat ,None
+    };
+
+    SpecifierType getSpecifierType(const char* fmt);
 }

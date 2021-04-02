@@ -18,6 +18,10 @@ TEST_CASE("Utils::isSpecifier", "[Utils]") {
             char str[] = "%a Hello World"; //%a no specifier (but valid)
             REQUIRE_NOTHROW(PrintfUtils::getNeededNrOfArguments(str) == 0);
         }
+        {
+            char str[] = "%%"; //%a no specifier (but valid)
+            REQUIRE_NOTHROW(PrintfUtils::getNeededNrOfArguments(str) == 0);
+        }
     }
     SECTION("Error") {
         {
@@ -25,4 +29,56 @@ TEST_CASE("Utils::isSpecifier", "[Utils]") {
             REQUIRE_NOTHROW(PrintfUtils::getNeededNrOfArguments(str) == -1);
         }
     } 
+}
+
+TEST_CASE("Utils::getSpecifierType", "[Utils]") {
+    SECTION("Specifiers") {
+        {
+            char str[] = "%d";
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::SignedInt);
+        }
+        {
+            char str[] = "%u";
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::UnsignedInt);
+        }
+        {
+            char str[] = "%c";
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::Char);
+        }
+        {
+            char str[] = "%s";
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::String);
+        }
+        {
+            char str[] = "%x";
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::Hexa);
+        }
+        {
+            char str[] = "%b";
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::Binary);
+        }
+    }
+    SECTION("Others:") {
+        {
+            char str[] = "%%";
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::SkipFormat);
+        }
+        {
+            char str[] = "%k";
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::None);
+        }
+        {
+            char* str = nullptr;
+            REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
+                == PrintfUtils::SpecifierType::None);
+        }
+    }
 }
