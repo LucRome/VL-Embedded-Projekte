@@ -57,5 +57,26 @@ Schreiben Sie eine eigene minimale printf Implementierung. Sie soll folgende Aus
 * %% für die Ausgabe des Prozentzeichens
 Für x und b gilt, dass beide keine führenden Nullen darstellen und negative Zahlen nutzen das Zweierkomplement.
 Signatur:
-´´´char* Printf(char* dst, const void* end, const char* fmt, ...);´´´
+```char* Printf(char* dst, const void* end, const char* fmt, ...);```
 Als Rückgabe erfolgt das nächste schreibbare Zeichen in **dst**. Der String ist an der Stelle **dst** null-terminiert. **end** ist das letzte beschreibbare Zeichen im Buffer.
+
+## Funktionen mit variablen Argumenten:
+* Bsp.:
+    * ```void fkt(const char* arg1, ...)```
+    * hier wichtig: **´´´...´´´**
+* Erklärungen:
+    * Vorlesungsfolien:
+        * Vorlesung 4 (es-04.pdf)
+        * Folie 57 (Pdf S. 29)
+    * Web:
+        * [willemer.de](http://www.willemer.de/informatik/cpp/parameter.htm)
+            * unter: "Variable Anzahl von Parametern"
+        * [wikibooks.org](https://de.wikibooks.org/wiki/C%2B%2B-Programmierung/_Weitere_Grundelemente/_Prozeduren_und_Funktionen)
+            * unter: "Funktionen mit beliebig vielen Argumenten"
+
+* Zugriff:
+    <iframe
+  src="https://carbon.now.sh/embed?bg=rgba%28171%2C+184%2C+195%2C+1%29&t=vscode&wt=none&l=text%2Fx-c%2B%2Bsrc&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=25px&ph=29px&ln=false&fl=1&fm=Hack&fs=14px&lh=133%25&si=false&es=2x&wm=false&code=void%2520fkt%28char*%2520arg1%252C%2520...%2520%29%2520%257B%250A%2509int%2520argc%253B%2520%252F%252FAnzahl%2520der%2520Argumente%250A%2520%2520%2520%2520va_list%2520params%253B%2520%252F%252FZugriffshandle%2520f%25C3%25BCr%2520die%2520Parameter%250A%2520%2520%2520%2520va_start%28params%252C%2520argc%29%253B%2520%252F%252FZugriff%2520vorbereiten%250A%250A%2520%2520%2520%2520%252F%252FAlle%2520Parameter%2520durchlaufen%250A%2520%2520%2520%2520for%28int%2520i%2520%253D%25200%253B%2520i%2520%253C%2520argc%253B%2520i%252B%252B%29%2520%257B%250A%2520%2520%2520%2520%2520%2520%2520%2520%252F%252FParameter%2520holen%2520%28hier%2520f%25C3%25BCr%2520int%29%250A%2520%2520%2520%2520%2520%2520%2520%2520%252F%252F%2520params%2520wird%2520automatisch%2520eins%2520weiterbewegt%250A%2520%2520%2520%2520%2520%2520%2520%2520int%2520arg%2520%253D%2520va_arg%28params%252C%2520int%29%250A%250A%2520%2520%2520%2520%2520%2520%2520%2520...%2520%252F%252Fverwerten%250A%2520%2520%2520%2520%257D%250A%250A%2520%2520%2520%2520va_end%28params%29%253B%2520%252F%252FZugriff%2520abschlie%25C3%259Fen%250A%257D"
+  style="width: 551px; height: 422px; border:0; transform: scale(1); overflow:hidden;"
+  sandbox="allow-scripts allow-same-origin">
+</iframe>
