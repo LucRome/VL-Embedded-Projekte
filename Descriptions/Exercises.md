@@ -47,7 +47,7 @@ arg_Val : Value;
 
 
 # Exercise 2
-Schreiben Sie eine eigene minimale printf Implementierung. Sie soll folgende Ausgabefunktionen erfüllen:
+Schreiben Sie eine eigene minimale printf Implementierung. Sie soll folgende Ausgabefunktionen erfüllen:
 * %d für signed int
 * %u für unsigned int
 * %c für ein einzelnes Zeichen
@@ -55,6 +55,7 @@ Schreiben Sie eine eigene minimale printf Implementierung. Sie soll folgende Aus
 * %x für die Ausgabe in Hexadezimalform (0xaf)
 * %b für die Ausgabe in Binärform (0b10101).
 * %% für die Ausgabe des Prozentzeichens
+
 Für x und b gilt, dass beide keine führenden Nullen darstellen und negative Zahlen nutzen das Zweierkomplement.
 Signatur:
 ```char* Printf(char* dst, const void* end, const char* fmt, ...);```
