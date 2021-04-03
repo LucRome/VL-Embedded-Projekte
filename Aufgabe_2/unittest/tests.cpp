@@ -101,4 +101,16 @@ TEST_CASE("Printf", "[Printf]") {
 
         REQUIRE(strcmp(dst, result));
     }
+
+    SECTION("signed int") {
+        {
+            char fmt[] = "Hello %d";
+            signed int arg = -12334;
+            char result[] = "Hello -12334";
+            
+            Printf(dst, end, fmt, arg);
+            printf("String: %s == %s \n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+    }
 }
