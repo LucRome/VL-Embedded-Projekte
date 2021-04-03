@@ -1,3 +1,5 @@
+#include "PrintfUtils.h"
+
 /**
  * @brief abstraction for the Destionation
  * (handles the Writing of chars to dst)
@@ -20,6 +22,15 @@ public:
      * @return false char can't be appended
      */
     bool appendCharToDest(const char& charToAppend);
+    /**
+     * @brief processes Specifiers and appends them to dst
+     * 
+     * @param specType type of Specifier
+     * @param arg Argument to use spec with
+     * @return true success
+     * @return false error
+     */
+    bool processSpecifier(const PrintfUtils::SpecifierType specType, void* arg);
     /**
      * @brief to catch errors (e.g. in constructor) 
      */
