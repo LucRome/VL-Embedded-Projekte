@@ -46,3 +46,38 @@ bool DestAppender::process_c(const int* arg) {
     // else //
     return appendCharToDest(*arg);
 }
+
+bool DestAppender::process_d(signed int arg) {
+    bool success = true;
+
+    if(arg < 0) {
+        success = appendCharToDest('-');
+        arg *= (-1);
+    }
+    if(success) {
+        const int buffer_length = 10;
+        char buffer[buffer_length] = {0};
+        int i = 0;
+
+        //put arg in char-buffer
+        while(success && arg > 0) {
+            int nr = arg % 10;
+            buffer[i] = nr;
+            arg /= 10; 
+            i++;       
+        }
+
+        //skip front 0
+        i = buffer_length - 1;
+        while(buffer[i] == 0) {
+            i--;
+        }
+
+        //write rest to dest
+        while(success && i >= 0) {
+            success = appendCharToDest(buffer[i] + '0');
+            i--;
+        }
+    }
+    return success;
+}

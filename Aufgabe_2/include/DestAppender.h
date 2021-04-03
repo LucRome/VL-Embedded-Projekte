@@ -40,6 +40,7 @@ public:
 
     /////////////// Functions /////////////////
     bool process_c(const int* arg);
+    bool process_d(signed int arg);
 
 private:
     /////////////// Fields ////////////////////

@@ -8,7 +8,6 @@ namespace {
     using namespace::PrintfUtils;
 
     bool processSpecifier(va_list& params, const PrintfUtils::SpecifierType specType, DestAppender& dstApp) {
-        
         switch (specType)
             {
             case SpecifierType::Binary:
@@ -22,8 +21,11 @@ namespace {
                 break;
             case SpecifierType::None:
                 break;
-            case SpecifierType::SignedInt:
+            case SpecifierType::SignedInt: {
+                signed int i = va_arg(params, signed int);
+                dstApp.process_d(i);
                 break;
+            }
             case SpecifierType::SkipFormat:
                 break;
             case SpecifierType::String:
