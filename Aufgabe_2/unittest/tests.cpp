@@ -1,6 +1,7 @@
 #include "catch.hpp"
 
 #include <cstring>
+#include <climits>
 
 #include "Printf.h"
 #include "PrintfUtils.h"
@@ -98,15 +99,40 @@ TEST_CASE("Printf", "[Printf]") {
         char result[] = "Hello A";
         
         Printf(dst, end, fmt, arg);
-
         REQUIRE(strcmp(dst, result) == 0);
     }
 
     SECTION("signed int") {
-        {
+        SECTION("standard") {
             char fmt[] = "Hello %d";
             signed int arg = -12334;
             char result[] = "Hello -12334";
+            
+            Printf(dst, end, fmt, arg);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("MAX") {
+            char fmt[] = "Hello %d";
+            signed int arg = INT_MAX;
+            char result[] = "Hello 2147483647";
+            
+            Printf(dst, end, fmt, arg);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+    }
+    SECTION("unsigned int") {
+        SECTION("standard") {
+            char fmt[] = "Hello %u";
+            unsigned int arg = 12334;
+            char result[] = "Hello 12334";
+            
+            Printf(dst, end, fmt, arg);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("MAX") {
+            char fmt[] = "Hello %u";
+            signed int arg = UINT_MAX;
+            char result[] = "Hello 4294967295";
             
             Printf(dst, end, fmt, arg);
             REQUIRE(strcmp(dst, result) == 0);
