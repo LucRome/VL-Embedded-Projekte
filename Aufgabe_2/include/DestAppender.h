@@ -41,10 +41,13 @@ public:
     /////////////// Functions /////////////////
     bool process_c(const int* arg);
     bool process_d(signed int arg);
+    bool process_u(unsigned int arg);
 
 private:
     /////////////// Fields ////////////////////
-    
+    template<typename T>
+    bool process_intType(T arg);
+
     /**
      * @brief start of dst
      * 

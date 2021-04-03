@@ -49,14 +49,22 @@ bool DestAppender::process_c(const int* arg) {
 
 bool DestAppender::process_d(signed int arg) {
     bool success = true;
-
+    unsigned int abs;
     if(arg < 0) {
         success = appendCharToDest('-');
-        arg *= (-1);
+        abs = arg * (-1);
+    } else {
+        abs = arg;
     }
+
+    return success && process_u(abs);
+}
+
+bool DestAppender::process_u(unsigned int arg) {
+    bool success = true;
     if(success) {
-        const int buffer_length = 10;
-        char buffer[buffer_length] = {0};
+        const int buffer_length = 11;
+        char buffer[buffer_length] = { 0 };
         int i = 0;
 
         //put arg in char-buffer

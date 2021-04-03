@@ -30,8 +30,11 @@ namespace {
                 break;
             case SpecifierType::String:
                 break;
-            case SpecifierType::UnsignedInt:
+            case SpecifierType::UnsignedInt: {
+                unsigned int i = va_arg(params, unsigned int);
+                dstApp.process_u(i);
                 break;
+            }
             default:
                 break;
             }
