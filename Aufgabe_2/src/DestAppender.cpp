@@ -26,47 +26,6 @@ bool DestAppender::appendCharToDest(const char& charToAppend) {
     }
 }
 
-bool DestAppender::processSpecifier(const PrintfUtils::SpecifierType specType, void* arg) {
-    using namespace PrintfUtils;
-    switch (specType)
-    {
-    case SpecifierType::Binary: {
-        
-        break;
-    }
-    case SpecifierType::Char: {
-
-        break;
-    }
-    case SpecifierType::Hexa: {
-
-        break;
-    }
-    case SpecifierType::None: {
-
-        break;
-    }
-    case SpecifierType::SignedInt: {
-
-        break;
-    }
-    case SpecifierType::SkipFormat: {
-
-        break;
-    }
-    case SpecifierType::String: {
-
-        break;
-    }
-    case SpecifierType::UnsignedInt: {
-
-        break;
-    }
-    default:
-        break;
-    }
-}
-
 void DestAppender::resetDst() {
     dst_current = const_cast<char*>(dst_start);
     *dst_current = '\0';
@@ -74,4 +33,16 @@ void DestAppender::resetDst() {
 
 const char* DestAppender::getDst_start() const {
     return dst_start;
+}
+
+////////////////////////////////
+// Processfkt. for the Specifiers
+////////////////////////////////
+
+bool DestAppender::processChar(const int* arg) {
+    if(arg == nullptr) {
+        return false;
+    }
+    // else //
+    return appendCharToDest(*arg);
 }
