@@ -68,6 +68,7 @@ char* Printf(char* dst, const void* end, const char* fmt, ...) {
                 fmt++;
             }
         }
+        va_end(params);
     }
     if(!PrintfUtils::EOS(fmt)) {
         //Error
