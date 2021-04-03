@@ -56,16 +56,19 @@ char* Printf(char* dst, const void* end, const char* fmt, ...) {
 
         while(!PrintfUtils::EOS(fmt) && success) {
             if(PrintfUtils::isSpecifier(fmt)) {
-                processSpecifier(params, PrintfUtils::getSpecifierType(fmt), destAppender);
+                success = processSpecifier(params, PrintfUtils::getSpecifierType(fmt), destAppender);
                 
                 fmt += 2;
             } 
             else {
-                destAppender.appendCharToDest(*fmt);
+                success = destAppender.appendCharToDest(*fmt);
                 fmt++;
             }
         }
     }
-
+    if(!PrintfUtils::EOS(fmt)) {
+        //Error
+        return const_cast<char*>(fmt);
+    }
     return nullptr;
 }
