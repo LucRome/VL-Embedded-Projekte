@@ -90,7 +90,7 @@ TEST_CASE("DestAppender::appendChar", "[DestAppender]") {
 }
 
 TEST_CASE("Printf", "[Printf]") {
-    char dst[20];
+    char dst[40];
     void* end = dst + (sizeof(dst) / sizeof(dst[0]));
 
     SECTION("char") {
@@ -135,6 +135,27 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Hello 4294967295";
             
             Printf(dst, end, fmt, arg);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+    }
+    SECTION("string") {
+        SECTION("one") {
+            char fmt[] = "Hello %s";
+            char arg[] = "12334";
+            char result[] = "Hello 12334";
+            
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("two") {
+            char fmt[] = "Hello %s How are %s";
+            char arg1[] = "Carl,";
+            char arg2[] = "you.";
+            char result[] = "Hello Carl, How are you.";
+            
+            Printf(dst, end, fmt, arg1, arg2);
+            printf("%s == %s", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
     }
