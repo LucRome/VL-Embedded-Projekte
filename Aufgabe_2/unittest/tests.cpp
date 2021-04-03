@@ -2,38 +2,13 @@
 
 #include <cstring>
 
+#include "Printf.h"
 #include "PrintfUtils.h"
 #include "DestAppender.h"
 
 ////////////////////////////////////////////////////////
 //  Utils
 ////////////////////////////////////////////////////////
-TEST_CASE("Utils::isSpecifier", "[Utils]") {
-    SECTION("Correct") {
-        {
-            char str[] = "%d, %u, %c, %s, %x, %b, %%"; //all specifiers (%% = escape format)
-            REQUIRE_NOTHROW(PrintfUtils::getNeededNrOfArguments(str) == 6);
-        }
-        {
-            char str[] = "%s, %"; //% as last char isn't catched here
-            REQUIRE_NOTHROW(PrintfUtils::getNeededNrOfArguments(str) == 1);
-        }
-        {
-            char str[] = "%a Hello World"; //%a no specifier (but valid)
-            REQUIRE_NOTHROW(PrintfUtils::getNeededNrOfArguments(str) == 0);
-        }
-        {
-            char str[] = "%%"; //%a no specifier (but valid)
-            REQUIRE_NOTHROW(PrintfUtils::getNeededNrOfArguments(str) == 0);
-        }
-    }
-    SECTION("Error") {
-        {
-            char* str = nullptr;
-            REQUIRE_NOTHROW(PrintfUtils::getNeededNrOfArguments(str) == -1);
-        }
-    } 
-}
 
 TEST_CASE("Utils::getSpecifierType", "[Utils]") {
     SECTION("Specifiers") {
@@ -110,5 +85,20 @@ TEST_CASE("DestAppender::appendChar", "[DestAppender]") {
             REQUIRE_FALSE(dstAppender.appendCharToDest('6'));
             REQUIRE(strcmp(result, dstAppender.getDst_start()) == 0);
         }
+    }
+}
+
+TEST_CASE("Printf", "[Printf]") {
+    char dst[20];
+    void* end = dst + (sizeof(dst) / sizeof(dst[0]));
+
+    SECTION("char") {
+        char fmt[] = "Hello %c";
+        char arg = 'A';
+        char result[] = "Hello A";
+        
+        Printf(dst, end, fmt, arg);
+
+        REQUIRE(strcmp(dst, result));
     }
 }

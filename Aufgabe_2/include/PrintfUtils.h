@@ -1,12 +1,6 @@
-namespace PrintfUtils {    
-    /**
-     * @brief Get the Needed Nr Of Arguments
-     * 
-     * @param fmt format string
-     * @return int nr of expected arguments (-1 = error)
-     */
-    int getNeededNrOfArguments(const char* fmt);
+#pragma once
 
+namespace PrintfUtils {
     /**
      * @brief specifiers: %d, %u, %c, %s, %x, %b
      * 

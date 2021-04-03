@@ -2,24 +2,6 @@
 
 namespace PrintfUtils {
 
-    int getNeededNrOfArguments(const char* fmt) {
-        if(!fmt) {
-            return -1;
-        } else {
-            int nrArgs = 0;
-            //iterate over fmt until terminated
-            while(!EOS(fmt)) {
-                //check if % and next is a specifier 
-                if(isSpecifier(fmt)) {
-                    nrArgs++;
-                }
-                fmt++;
-            }
-
-            return nrArgs;
-        }
-    };
-
     bool isSpecifier(const char* fmt) {
         if(fmt == nullptr) {
             return false;
