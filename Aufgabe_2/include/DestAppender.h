@@ -39,7 +39,7 @@ public:
     const char* getDst_start() const;
 
     /////////////// Functions /////////////////
-    bool processChar(const int* arg);
+    bool process_c(const int* arg);
 
 private:
     /////////////// Fields ////////////////////

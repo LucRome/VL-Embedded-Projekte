@@ -15,7 +15,7 @@ namespace {
                 break;
             case SpecifierType::Char: {
                 int i = va_arg(params, int);
-                dstApp.processChar(&i);
+                dstApp.process_c(&i);
                 break;
             }
             case SpecifierType::Hexa:

@@ -39,7 +39,7 @@ const char* DestAppender::getDst_start() const {
 // Processfkt. for the Specifiers
 ////////////////////////////////
 
-bool DestAppender::processChar(const int* arg) {
+bool DestAppender::process_c(const int* arg) {
     if(arg == nullptr) {
         return false;
     }
