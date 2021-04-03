@@ -23,15 +23,6 @@ public:
      */
     bool appendCharToDest(const char& charToAppend);
     /**
-     * @brief processes Specifiers and appends them to dst
-     * 
-     * @param specType type of Specifier
-     * @param arg Argument to use spec with
-     * @return true success
-     * @return false error
-     */
-    bool processSpecifier(const PrintfUtils::SpecifierType specType, void* arg);
-    /**
      * @brief to catch errors (e.g. in constructor) 
      */
     bool blocked;
@@ -44,7 +35,13 @@ public:
      * @brief Get the pointer to the start of dst
      */
     const char* getDst_start() const;
+
+    /////////////// Functions /////////////////
+    bool processChar(const int* arg);
+
 private:
+    /////////////// Fields ////////////////////
+    
     /**
      * @brief start of dst
      * 
