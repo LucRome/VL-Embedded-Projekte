@@ -1,5 +1,9 @@
 #include "catch.hpp"
+
+#include <cstring>
+
 #include "PrintfUtils.h"
+#include "DestAppender.h"
 
 ////////////////////////////////////////////////////////
 //  Utils
@@ -79,6 +83,32 @@ TEST_CASE("Utils::getSpecifierType", "[Utils]") {
             char* str = nullptr;
             REQUIRE_NOTHROW(PrintfUtils::getSpecifierType(str) 
                 == PrintfUtils::SpecifierType::None);
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////
+//  DestAppender
+////////////////////////////////////////////////////////
+TEST_CASE("DestAppender::appendChar", "[DestAppender]") {
+    //Allocate dst
+    const int dst_length = 6;
+    char dst[dst_length] = "abcde";
+
+    DestAppender dstAppender = DestAppender(dst, dst + dst_length - 1);
+
+    REQUIRE(!dstAppender.blocked);
+
+    SECTION("Correct:") {      
+        {
+            char result[dst_length] = "12345";
+            for(int i = 0; i < dst_length - 1; i++) {
+                REQUIRE(dstAppender.appendCharToDest(result[i]));
+            }
+            //No place for '\0' anymore
+            REQUIRE_FALSE(dstAppender.appendCharToDest('6'));
+            REQUIRE(strcmp(result, dstAppender.getDst_start()) == 0);
         }
     }
 }
