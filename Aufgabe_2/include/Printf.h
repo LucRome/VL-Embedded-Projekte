@@ -1,3 +1,5 @@
+#pragma once
+
 /**
  * @brief own implementation of printf
  * 
