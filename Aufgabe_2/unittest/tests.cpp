@@ -91,7 +91,7 @@ TEST_CASE("DestAppender::appendChar", "[DestAppender]") {
 
 TEST_CASE("Printf", "[Printf]") {
     char dst[80];
-    void* end = dst + (sizeof(dst) / sizeof(dst[0]));
+    void* end = dst - 1 + (sizeof(dst) / sizeof(dst[0]));
 
     SECTION("char") {
         char fmt[] = "Hello %c";
@@ -234,5 +234,30 @@ TEST_CASE("Printf", "[Printf]") {
             printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
+    }
+}
+
+TEST_CASE("Printf: out of bounds", "[Printf]") {
+    SECTION("standard 1") {
+        char dst[5] = {0};
+        char* end = dst + sizeof(dst) - 1;
+
+        char fmt[] = "ABCDEFGHI";
+        char* res = Printf(dst, end, fmt);
+        printf("end: %c\n", *end);
+        printf("dst: %s\n", dst);
+        printf("%s == %s\n", res, fmt + 4);
+        REQUIRE(strcmp(res, (fmt + 4)) == 0);
+    }
+    SECTION("standard") {
+        char dst[9] = {0};
+        char* end = dst + sizeof(dst) - 1;
+
+        char fmt[] = "ABCDEFGH2";
+        char* res = Printf(dst, end, fmt);
+        printf("end: %c\n", *end);
+        printf("fmt: %s\n", fmt);
+        printf("%s == %s\n", res, fmt + 8);
+        REQUIRE(strcmp(res, (fmt + 8)) == 0);
     }
 }

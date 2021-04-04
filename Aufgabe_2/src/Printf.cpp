@@ -57,20 +57,21 @@ using namespace PrintfUtils;
 char* Printf(char* dst, const void* end, const char* fmt, ...) {
     
     DestAppender destAppender = DestAppender(dst, end);
-
+    
     if(!dst || !end || !fmt) {
         return nullptr;
     }
     else {
+        const char* safePos = fmt;
         bool success = true;
         //access "..."
         va_list params;
         va_start(params, fmt);
 
         while(!PrintfUtils::EOS(fmt) && success) {
+            safePos = fmt;
             if(PrintfUtils::isSpecifier(fmt)) {
                 success = processSpecifier(params, PrintfUtils::getSpecifierType(fmt), destAppender);
-                
                 fmt += 2;
             } 
             else {
@@ -79,10 +80,11 @@ char* Printf(char* dst, const void* end, const char* fmt, ...) {
             }
         }
         va_end(params);
-    }
-    if(!PrintfUtils::EOS(fmt)) {
-        //Error
-        return const_cast<char*>(fmt);
+
+        if(!success) {
+            //Error
+            return const_cast<char*>(safePos);
+        }
     }
     return nullptr;
 }
