@@ -8,46 +8,47 @@ namespace {
     using namespace::PrintfUtils;
 
     bool processSpecifier(va_list& params, const PrintfUtils::SpecifierType specType, DestAppender& dstApp) {
+        bool success = true;
         switch (specType)
             {
             case SpecifierType::Binary: {
                 signed int i = va_arg(params, signed int);
-                dstApp.process_b(i);
+                success = dstApp.process_b(i);
                 break;
             }
             case SpecifierType::Char: {
                 int i = va_arg(params, int);
-                dstApp.process_c(&i);
+                success = dstApp.process_c(&i);
                 break;
             }
             case SpecifierType::Hexa: {
                 signed int i = va_arg(params, signed int);
-                dstApp.process_x(i);
+                success = dstApp.process_x(i);
                 break;
             }
-            case SpecifierType::None:
-                break;
             case SpecifierType::SignedInt: {
                 signed int i = va_arg(params, signed int);
-                dstApp.process_d(i);
+                success = dstApp.process_d(i);
                 break;
             }
-            case SpecifierType::SkipFormat:
-                break;
             case SpecifierType::String: {
                 char* arg = va_arg(params, char*);
-                dstApp.process_s(arg);
+                success = dstApp.process_s(arg);
                 break;
             }
             case SpecifierType::UnsignedInt: {
                 unsigned int i = va_arg(params, unsigned int);
-                dstApp.process_u(i);
+                success = dstApp.process_u(i);
                 break;
             }
+            case SpecifierType::SkipFormat:
+                success = dstApp.appendCharToDest('%');
+                break;
             default:
+                success = false;
                 break;
             }
-        return true;
+        return success;
     }
 }
 
