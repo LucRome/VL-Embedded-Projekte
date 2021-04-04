@@ -235,6 +235,14 @@ TEST_CASE("Printf", "[Printf]") {
             REQUIRE(strcmp(dst, result) == 0);
         }
     }
+    SECTION("skip") {
+        char fmt[] = "skip: %%";
+        char result[] = "skip: %";
+        
+        Printf(dst, end, fmt);
+        printf("%s == %s\n", dst, result);
+        REQUIRE(strcmp(dst, result) == 0);
+    }
 }
 
 TEST_CASE("Printf: out of bounds", "[Printf]") {
@@ -249,7 +257,7 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
         printf("%s == %s\n", res, fmt + 4);
         REQUIRE(strcmp(res, (fmt + 4)) == 0);
     }
-    SECTION("standard") {
+    SECTION("standard 2") {
         char dst[9] = {0};
         char* end = dst + sizeof(dst) - 1;
 
@@ -259,5 +267,92 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
         printf("fmt: %s\n", fmt);
         printf("%s == %s\n", res, fmt + 8);
         REQUIRE(strcmp(res, (fmt + 8)) == 0);
+    }
+
+    SECTION("with Specifiers") {
+        SECTION("%d") {
+            char dst[4] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "AB%d";
+            int arg = -12442;
+            char* res = Printf(dst, end, fmt);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 2);
+            REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
+        SECTION("%u") {
+            char dst[4] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "AB%u";
+            unsigned int arg = 12442;
+            char* res = Printf(dst, end, fmt);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 2);
+            REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
+        SECTION("%c") {
+            char dst[3] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "AB%c";
+            char arg = 'V';
+            char* res = Printf(dst, end, fmt);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 2);
+            REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
+        SECTION("%s") {
+            char dst[4] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "AB%s";
+            char arg[] = "Vasdagds";
+            char* res = Printf(dst, end, fmt);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 2);
+            REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
+        SECTION("%x") {
+            char dst[4] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "AB%x";
+            int arg = 0xabcd;
+            char* res = Printf(dst, end, fmt);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 2);
+            REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
+        SECTION("%b") {
+            char dst[4] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "AB%b";
+            int arg = 0b11101010;
+            char* res = Printf(dst, end, fmt);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 2);
+            REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
+        SECTION("%%") {
+            char dst[3] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "AB%%";
+            char arg = 'V';
+            char* res = Printf(dst, end, fmt);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 2);
+            REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
     }
 }
