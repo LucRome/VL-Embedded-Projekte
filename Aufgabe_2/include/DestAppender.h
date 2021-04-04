@@ -44,6 +44,7 @@ public:
     bool process_u(unsigned int arg);
     bool process_s(char* arg);
     bool process_b(signed int arg);
+    bool process_x(signed int arg);
 
 private:
     /////////////// Fields ////////////////////

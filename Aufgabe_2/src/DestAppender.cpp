@@ -109,7 +109,6 @@ bool DestAppender::process_s(char* arg) {
 const int int_length = 32; 
 
 bool DestAppender::process_b(signed int arg) {
-    bool success = true;
     unsigned int uInt;
     //Handling of negative numbers
     if(arg < 0) {
@@ -119,12 +118,14 @@ bool DestAppender::process_b(signed int arg) {
     }
 
     // write bits to out with the help of logical operators
-    unsigned int mask = 1 << 31; //highest Bit of int
+    unsigned int mask = 1 << (int_length - 1); //highest Bit of int
 
     //skip 0 at front:
     while (mask > 0 && (uInt & mask) == 0) {
         mask = mask >> 1;
     }
+
+    bool success = true;
     // write 0/1 to dst
     while (success && (mask > 0)) {
         if((uInt & mask) > 0) { //Bit set -> write 1
@@ -136,4 +137,45 @@ bool DestAppender::process_b(signed int arg) {
     }
 
     return success;
+}
+
+const char hexSymbols[] = { '0','1','2','3',
+                            '4','5','6','7',
+                            '8','9','A','B',
+                            'C','D','E','F'
+                        };
+
+const int hexWidth = 4;
+
+bool DestAppender::process_x(signed int arg) {
+    unsigned int uInt;
+    //handle negative nr.
+    if(arg < 0) {
+        uInt = UINT_MAX + 1 + arg; // (= UINT_MAX + 1 - |arg|)
+    } else {
+        uInt = arg;
+    }
+
+    // write bits to out with the help of logical operators
+    unsigned int mask = 0xF << (int_length - hexWidth); //highest 4Bits of int
+
+    int rshifts = int_length;
+    //skip 0 at front:
+    while (mask > 0 && (uInt & mask) == 0) {
+        mask = mask >> hexWidth;
+        rshifts -= hexWidth;
+    }
+
+    bool success = true;
+
+    // write hexSymbol to dst
+    while (success && (mask > 0)) {
+        rshifts -= hexWidth;
+        int nr = (uInt & mask) >> rshifts;
+        success = appendCharToDest(hexSymbols[nr]);
+        mask = mask >> hexWidth;
+    }
+
+    return success;
+
 }

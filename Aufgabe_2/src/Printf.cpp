@@ -20,8 +20,11 @@ namespace {
                 dstApp.process_c(&i);
                 break;
             }
-            case SpecifierType::Hexa:
+            case SpecifierType::Hexa: {
+                signed int i = va_arg(params, signed int);
+                dstApp.process_x(i);
                 break;
+            }
             case SpecifierType::None:
                 break;
             case SpecifierType::SignedInt: {
