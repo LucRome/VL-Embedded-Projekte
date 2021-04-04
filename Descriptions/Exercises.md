@@ -61,6 +61,12 @@ Signatur:
 ```char* Printf(char* dst, const void* end, const char* fmt, ...);```
 Als Rückgabe erfolgt das nächste schreibbare Zeichen in **dst**. Der String ist an der Stelle **dst** null-terminiert. **end** ist das letzte beschreibbare Zeichen im Buffer.
 
+* **Verhalten bei zu falschen Arugumenten**
+    * zu wenig:
+        * keine Ausgabe an der Stelle wo die Argumente fehlen
+    * Falscher Typ:
+        * wird zu dem richtigen Typ gecastet -> eventuell segmentation fault
+
 ## Zweierkomplemente:
 * **Berechnung/Kontrolle mit Windows Rechner:**
     * Bitzahl auf "DWORD" einstellen *(mittig über Bedienfeld)*
@@ -109,6 +115,6 @@ sandbox="allow-scripts allow-same-origin">
 
 ## Notes
 * **TODO:**
-    * bei Funktionen Funktionen wo die zwei Specifier chars durch mehr chars ersetzt werden:
+    * [x] bei Funktionen Funktionen wo die zwei Specifier chars durch mehr chars ersetzt werden:
         * wenn die Ersetzung aus Platzgründen nicht komplett durchgeführt werden kann, die Ersetzung auch nicht durchführen und die zugrunde liegenden Specifier Strings noch in dem zurückzugebenen char* lassen
 
