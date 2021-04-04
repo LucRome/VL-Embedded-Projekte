@@ -158,6 +158,9 @@ bool DestAppender::process_b(signed int arg) {
     }
 
     bool success = true;
+    //write prefix (0b)
+    success = appendCharToDest('0') && appendCharToDest('b');
+
     // write 0/1 to dst
     while (success && (mask > 0)) {
         if((uInt & mask) > 0) { //Bit set -> write 1
@@ -203,6 +206,9 @@ bool DestAppender::process_x(signed int arg) {
     }
 
     bool success = true;
+
+    // write prefix (0x)
+    success = appendCharToDest('0') && appendCharToDest('x');
 
     // write hexSymbol to dst
     while (success && (mask > 0)) {
