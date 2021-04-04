@@ -163,7 +163,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("one") {
             char fmt[] = "B: %b";
             signed int arg = 61276;
-            char result[] = "B: 1110111101011100";
+            char result[] = "B: 0b1110111101011100";
             
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -172,7 +172,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("two") {
             char fmt[] = "Neg: %b";
             signed int arg = INT_MIN; //-2.147.483.648
-            char result[] = "Neg: 10000000000000000000000000000000";
+            char result[] = "Neg: 0b10000000000000000000000000000000";
             
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -181,7 +181,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("three") {
             char fmt[] = "Neg: %b";
             signed int arg = -1;
-            char result[] = "Neg: 11111111111111111111111111111111";
+            char result[] = "Neg: 0b11111111111111111111111111111111";
                                     
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -190,7 +190,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("four") {
             char fmt[] = "Pos: %b";
             signed int arg = INT_MAX; // 2147483647
-            char result[] = "Pos: 1111111111111111111111111111111";
+            char result[] = "Pos: 0b1111111111111111111111111111111";
             
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -201,7 +201,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("one") {
             char fmt[] = "X: %x";
             signed int arg = 61276;
-            char result[] = "X: EF5C";
+            char result[] = "X: 0xEF5C";
             
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -210,7 +210,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("two") {
             char fmt[] = "Neg: %x";
             signed int arg = INT_MIN; //-2.147.483.648
-            char result[] = "Neg: 80000000";
+            char result[] = "Neg: 0x80000000";
             
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -219,7 +219,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("three") {
             char fmt[] = "Neg: %x";
             signed int arg = -1;
-            char result[] = "Neg: FFFFFFFF";
+            char result[] = "Neg: 0xFFFFFFFF";
                                     
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -228,7 +228,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("four") {
             char fmt[] = "Pos: %x";
             signed int arg = INT_MAX; // 2147483647
-            char result[] = "Pos: 7FFFFFFF";
+            char result[] = "Pos: 0x7FFFFFFF";
             
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -380,5 +380,23 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
+    }
+}
+
+TEST_CASE("wrong arguments") {
+    char dst[20] = {0};
+    char* end = dst + sizeof(dst) - 1;
+    
+    SECTION("TO FEW") {
+        char fmt[] = "%d, %u, %x, %s";
+        int arg = -124;
+        unsigned int arg2 = 32;
+        int arg3 = 0xFF;
+
+        char res[] = "-124, 32, FF, "; // Missing arg -> print nothing
+        
+        char* ret = Printf(dst, end, fmt, arg, arg2, arg3);
+        printf("dst: %s", dst);
+        REQUIRE(strcmp(dst, res) == 0);
     }
 }
