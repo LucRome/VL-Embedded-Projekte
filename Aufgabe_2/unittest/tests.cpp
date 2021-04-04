@@ -393,7 +393,7 @@ TEST_CASE("wrong arguments") {
         unsigned int arg2 = 32;
         int arg3 = 0xFF;
 
-        char res[] = "-124, 32, FF, "; // Missing arg -> print nothing
+        char res[] = "-124, 32, 0xFF, "; // Missing arg -> print nothing
         
         char* ret = Printf(dst, end, fmt, arg, arg2, arg3);
         printf("dst: %s", dst);
