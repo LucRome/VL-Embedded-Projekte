@@ -48,13 +48,13 @@ arg_Val : Value;
 
 # Exercise 2
 Schreiben Sie eine eigene minimale printf Implementierung. Sie soll folgende Ausgabefunktionen erfüllen:
-[x] %d für signed int
-[x] %u für unsigned int
-[x] %c für ein einzelnes Zeichen
-[x] %s für eine Zeichenkette
-[x] %x für die Ausgabe in Hexadezimalform (0xaf)
-[x] %b für die Ausgabe in Binärform (0b10101).
-[x] %% für die Ausgabe des Prozentzeichens
+- [x] %d für signed int
+- [x] %u für unsigned int
+- [x] %c für ein einzelnes Zeichen
+- [x] %s für eine Zeichenkette
+- [x] %x für die Ausgabe in Hexadezimalform (0xaf)
+- [x] %b für die Ausgabe in Binärform (0b10101).
+- [x] %% für die Ausgabe des Prozentzeichens
 
 Für x und b gilt, dass beide keine führenden Nullen darstellen und negative Zahlen nutzen das Zweierkomplement.
 Signatur:
