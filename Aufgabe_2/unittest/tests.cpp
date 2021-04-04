@@ -90,7 +90,7 @@ TEST_CASE("DestAppender::appendChar", "[DestAppender]") {
 }
 
 TEST_CASE("Printf", "[Printf]") {
-    char dst[40];
+    char dst[80];
     void* end = dst + (sizeof(dst) / sizeof(dst[0]));
 
     SECTION("char") {
@@ -145,7 +145,7 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Hello 12334";
             
             Printf(dst, end, fmt, arg);
-            printf("%s == %s", dst, result);
+            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("two") {
@@ -155,7 +155,45 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Hello Carl, How are you.";
             
             Printf(dst, end, fmt, arg1, arg2);
-            printf("%s == %s", dst, result);
+            printf("%s == %s\n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+    }
+    SECTION("binary") {
+        SECTION("one") {
+            char fmt[] = "B: %b";
+            signed int arg = 61276;
+            char result[] = "B: 1110111101011100";
+            
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s\n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("two") {
+            char fmt[] = "Neg: %b";
+            signed int arg = INT_MIN; //-2.147.483.648
+            char result[] = "Neg: 10000000000000000000000000000000";
+            
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s\n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("three") {
+            char fmt[] = "Neg: %b";
+            signed int arg = -1; //-2.147.483.648
+            char result[] = "Neg: 11111111111111111111111111111111";
+                                    
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s\n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("four") {
+            char fmt[] = "Pos: %b";
+            signed int arg = INT_MAX; // 2147483647
+            char result[] = "Pos: 1111111111111111111111111111111";
+            
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
     }
