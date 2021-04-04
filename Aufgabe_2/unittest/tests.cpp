@@ -312,7 +312,7 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
 
             char fmt[] = "AB%s";
             char arg[] = "Vasdagds";
-            char* res = Printf(dst, end, fmt);
+            char* res = Printf(dst, end, fmt, arg);
             printf("end: %c\n", *end);
             printf("fmt: %s\n", fmt);
             printf("%s == %s\n", res, fmt + 2);
@@ -341,6 +341,32 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             printf("fmt: %s\n", fmt);
             printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
+        SECTION("%%") {
+            char dst[3] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "AB%%";
+            char arg = 'V';
+            char* res = Printf(dst, end, fmt);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 2);
+            REQUIRE(strcmp(res, (fmt + 2)) == 0);
+        }
+        SECTION("mixed") {
+            char dst[17] = {0};
+            char* end = dst + sizeof(dst) - 1;
+
+            char fmt[] = "12 %x 79 %s";
+            int arg1 = 0x123;
+            char arg2[] = "HASKdha";
+            char* res = Printf(dst, end, fmt, arg1, arg2);
+            printf("dst: %s\n", dst);
+            printf("end: %c\n", *end);
+            printf("fmt: %s\n", fmt);
+            printf("%s == %s\n", res, fmt + 9);
+            REQUIRE(strcmp(res, (fmt + 9)) == 0);
         }
         SECTION("%%") {
             char dst[3] = {0};
