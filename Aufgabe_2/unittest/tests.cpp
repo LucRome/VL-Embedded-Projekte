@@ -197,4 +197,42 @@ TEST_CASE("Printf", "[Printf]") {
             REQUIRE(strcmp(dst, result) == 0);
         }
     }
+    SECTION("hex") {
+        SECTION("one") {
+            char fmt[] = "X: %x";
+            signed int arg = 61276;
+            char result[] = "X: EF5C";
+            
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s\n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("two") {
+            char fmt[] = "Neg: %x";
+            signed int arg = INT_MIN; //-2.147.483.648
+            char result[] = "Neg: 80000000";
+            
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s\n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("three") {
+            char fmt[] = "Neg: %x";
+            signed int arg = -1;
+            char result[] = "Neg: FFFFFFFF";
+                                    
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s\n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+        SECTION("four") {
+            char fmt[] = "Pos: %x";
+            signed int arg = INT_MAX; // 2147483647
+            char result[] = "Pos: 7FFFFFFF";
+            
+            Printf(dst, end, fmt, arg);
+            printf("%s == %s\n", dst, result);
+            REQUIRE(strcmp(dst, result) == 0);
+        }
+    }
 }
