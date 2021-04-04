@@ -201,7 +201,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("one") {
             char fmt[] = "X: %x";
             signed int arg = 61276;
-            char result[] = "X: 0xEF5C";
+            char result[] = "X: 0xef5c";
             
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -219,7 +219,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("three") {
             char fmt[] = "Neg: %x";
             signed int arg = -1;
-            char result[] = "Neg: 0xFFFFFFFF";
+            char result[] = "Neg: 0xffffffff";
                                     
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -228,7 +228,7 @@ TEST_CASE("Printf", "[Printf]") {
         SECTION("four") {
             char fmt[] = "Pos: %x";
             signed int arg = INT_MAX; // 2147483647
-            char result[] = "Pos: 0x7FFFFFFF";
+            char result[] = "Pos: 0x7fffffff";
             
             Printf(dst, end, fmt, arg);
             printf("%s == %s\n", dst, result);
@@ -393,7 +393,7 @@ TEST_CASE("wrong arguments") {
         unsigned int arg2 = 32;
         int arg3 = 0xFF;
 
-        char res[] = "-124, 32, 0xFF, "; // Missing arg -> print nothing
+        char res[] = "-124, 32, 0xff, "; // Missing arg -> print nothing
         
         char* ret = Printf(dst, end, fmt, arg, arg2, arg3);
         printf("dst: %s", dst);
