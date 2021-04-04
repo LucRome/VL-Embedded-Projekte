@@ -10,8 +10,11 @@ namespace {
     bool processSpecifier(va_list& params, const PrintfUtils::SpecifierType specType, DestAppender& dstApp) {
         switch (specType)
             {
-            case SpecifierType::Binary:
+            case SpecifierType::Binary: {
+                signed int i = va_arg(params, signed int);
+                dstApp.process_b(i);
                 break;
+            }
             case SpecifierType::Char: {
                 int i = va_arg(params, int);
                 dstApp.process_c(&i);

@@ -1,5 +1,7 @@
 #include "DestAppender.h"
 
+#include <climits>
+
 DestAppender::DestAppender(char* dst, const void* end) 
     :blocked(false)
     ,dst_start(dst)
@@ -100,6 +102,38 @@ bool DestAppender::process_s(char* arg) {
         success = appendCharToDest(*arg);
         arg++;
     } while(success && !PrintfUtils::EOS(arg));
+
+    return success;
+}
+
+const int int_length = 32; 
+
+bool DestAppender::process_b(signed int arg) {
+    bool success = true;
+    unsigned int uInt;
+    //Handling of negative numbers
+    if(arg < 0) {
+        uInt = UINT_MAX + 1 + arg; // (= UINT_MAX + 1 - |arg|)
+    } else {
+        uInt = arg;
+    }
+
+    // write bits to out with the help of logical operators
+    unsigned int mask = 1 << 31; //highest Bit of int
+
+    //skip 0 at front:
+    while (mask > 0 && (uInt & mask) == 0) {
+        mask = mask >> 1;
+    }
+    // write 0/1 to dst
+    while (success && (mask > 0)) {
+        if((uInt & mask) > 0) { //Bit set -> write 1
+            success = appendCharToDest('1');
+        } else { //write 0
+            success = appendCharToDest('0');
+        }
+        mask = mask >> 1; // =: x/2
+    }
 
     return success;
 }
