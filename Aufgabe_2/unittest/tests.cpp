@@ -180,7 +180,7 @@ TEST_CASE("Printf", "[Printf]") {
         }
         SECTION("three") {
             char fmt[] = "Neg: %b";
-            signed int arg = -1; //-2.147.483.648
+            signed int arg = -1;
             char result[] = "Neg: 11111111111111111111111111111111";
                                     
             Printf(dst, end, fmt, arg);
