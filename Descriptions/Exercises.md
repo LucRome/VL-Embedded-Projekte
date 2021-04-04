@@ -62,6 +62,8 @@ Signatur:
 Als Rückgabe erfolgt das nächste schreibbare Zeichen in **dst**. Der String ist an der Stelle **dst** null-terminiert. **end** ist das letzte beschreibbare Zeichen im Buffer.
 
 ## Zweierkomplemente:
+* **Berechnung/Kontrolle mit Windows Rechner:**
+    * Bitzahl auf "DWORD" einstellen *(mittig über Bedienfeld)*
 * **bei Binär:**
     * basierend auf dem Zahlenkreis [(siehe)]](http://informatik-stoffsammlung.de/index.php?page=zweierkomplementdarstellung)
     * umwandlung einer negativen Zahl in die zugehörige positive Zahl
@@ -71,7 +73,7 @@ Als Rückgabe erfolgt das nächste schreibbare Zeichen in **dst**. Der String is
         y = Max_unsigned + 1 - |x|    (für x < 0)
         y = x                       (für x >= 0)
         ```
-    * Umwandlung in binär:
+    * Umwandlung in binär: (hier nicht nötig, einfache maskierung genügt)
         * Bsp.:
         ```
         13 / 2 = 6 R=1 ▲
@@ -79,8 +81,10 @@ Als Rückgabe erfolgt das nächste schreibbare Zeichen in **dst**. Der String is
         3 / 2 = 1 R=1  |
         1 / 2 = 0 R=1  |
         ```
-
-
+* **Hexadezimal:**
+    * Negative Zahl in zug. pos. Zahl umwandeln (sh. bei Binär)
+    * Ausgabe mit Maskierung
+        * aber 4 Bitzahlen für eine Hex-Zahl
 
 ## Funktionen mit variablen Argumenten:
 * Bsp.:
