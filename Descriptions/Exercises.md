@@ -61,6 +61,27 @@ Signatur:
 ```char* Printf(char* dst, const void* end, const char* fmt, ...);```
 Als Rückgabe erfolgt das nächste schreibbare Zeichen in **dst**. Der String ist an der Stelle **dst** null-terminiert. **end** ist das letzte beschreibbare Zeichen im Buffer.
 
+## Zweierkomplemente:
+* **bei Binär:**
+    * basierend auf dem Zahlenkreis [(siehe)]](http://informatik-stoffsammlung.de/index.php?page=zweierkomplementdarstellung)
+    * umwandlung einer negativen Zahl in die zugehörige positive Zahl
+        * Im Bild bspw. -1 -> 15; -4 -> 12; *(x -> y)*
+    * Rechenregel: 
+        ```
+        y = Max_unsigned + 1 - |x|    (für x < 0)
+        y = x                       (für x >= 0)
+        ```
+    * Umwandlung in binär:
+        * Bsp.:
+        ```
+        13 / 2 = 6 R=1 ▲
+        6 / 2 = 3 R=0  |
+        3 / 2 = 1 R=1  |
+        1 / 2 = 0 R=1  |
+        ```
+
+
+
 ## Funktionen mit variablen Argumenten:
 * Bsp.:
     * ```void fkt(const char* arg1, ...)```
@@ -81,4 +102,10 @@ src="https://carbon.now.sh/embed?bg=rgba%28171%2C+184%2C+195%2C+1%29&t=vscode&wt
 style="width: 551px; height: 422px; border:0; transform: scale(1); overflow:hidden;"
 sandbox="allow-scripts allow-same-origin">
 </iframe>
+
+## Notes
+* **TODO:**
+    * bei Funktionen Funktionen wo die zwei Specifier chars durch mehr chars ersetzt werden:
+        * wenn die Ersetzung aus Platzgründen nicht komplett durchgeführt werden kann, die Ersetzung auch nicht durchführen und die zugrunde liegenden Specifier Strings noch in dem zurückzugebenen char* lassen
+    * %b, %x
 
