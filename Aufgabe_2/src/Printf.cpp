@@ -28,8 +28,11 @@ namespace {
             }
             case SpecifierType::SkipFormat:
                 break;
-            case SpecifierType::String:
+            case SpecifierType::String: {
+                char* arg = va_arg(params, char*);
+                dstApp.process_s(arg);
                 break;
+            }
             case SpecifierType::UnsignedInt: {
                 unsigned int i = va_arg(params, unsigned int);
                 dstApp.process_u(i);

@@ -42,6 +42,7 @@ public:
     bool process_c(const int* arg);
     bool process_d(signed int arg);
     bool process_u(unsigned int arg);
+    bool process_s(char* arg);
 
 private:
     /////////////// Fields ////////////////////

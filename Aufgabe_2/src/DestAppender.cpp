@@ -89,3 +89,17 @@ bool DestAppender::process_u(unsigned int arg) {
     }
     return success;
 }
+
+bool DestAppender::process_s(char* arg) {
+    if(arg == nullptr) {
+        return false;
+    }
+    // else //
+    bool success;
+    do {
+        success = appendCharToDest(*arg);
+        arg++;
+    } while(success && !PrintfUtils::EOS(arg));
+
+    return success;
+}
