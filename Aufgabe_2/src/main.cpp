@@ -3,29 +3,17 @@
 #include "DestAppender.h"
 
 int main() {
-    // {
-    //     //Allocate dst
-    //     const int dst_length = 6;
-    //     char dst[dst_length] = "abcde";
-    //     printf("%c \n", dst[0]);
-    //     DestAppender dstAppender = DestAppender(dst, dst + dst_length - 1);
-    //     printf("%s\n", dst);
-    //     char i = '0';
-    //     while(dstAppender.appendCharToDest(i)) {
-    //         printf("dst %c: %s\n", i, dst);
-    //         i++;
-    //     }
-    //     dstAppender.resetDst();
-    // }  
+    char dst[20] = {0};
+    char* end = dst + sizeof(dst);
 
-    {
-        char dst[14] = {0};
-        void* end = &dst[13];
-        char fmt[] = "Hello %d";
-        signed int arg = -12334;
-        char result[] = "Hello -12334";
-        
-        Printf(dst, end, fmt, arg);
-        printf("String: %s == %s \n", dst, result);
-    }
+    // Wrong type of argument
+    char fmt[] = "%d, %u, %s, %s";
+    int arg = -124;
+    unsigned int arg2 = 32;
+    int arg3 = 0xFF;
+
+    //char res[] = "-124, 32, FF, "; // Wrong type: interpreted as the needed Type -> evtl error
+    
+    char* ret = Printf(dst, end, fmt, arg, arg2, arg3);
+    printf("dst: %s, ret: %s", dst, ret);    
 }
