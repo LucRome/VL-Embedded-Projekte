@@ -8,7 +8,7 @@ namespace PrintfUtils {
             return false;
         } else {
             SpecifierType st = getSpecifierType(fmt);
-            return st != SpecifierType::None && st != SpecifierType::SkipFormat;
+            return st != SpecifierType::None;
         }
     }
 

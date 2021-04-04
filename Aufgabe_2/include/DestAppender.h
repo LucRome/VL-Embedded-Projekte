@@ -37,6 +37,9 @@ public:
      * @brief Get the pointer to the start of dst
      */
     const char* getDst_start() const;
+    const char* getDst_current() const;
+
+    void setDstToPos(const char* pos);
 
     /////////////// Functions /////////////////
     bool process_c(const int* arg);

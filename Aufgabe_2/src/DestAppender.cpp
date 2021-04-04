@@ -37,19 +37,38 @@ const char* DestAppender::getDst_start() const {
     return dst_start;
 }
 
+const char* DestAppender::getDst_current() const {
+    return dst_current;
+}
+
+void DestAppender::setDstToPos(const char* pos) {
+    if(pos && (pos >= dst_start) && (pos <= end)) {
+        dst_current = const_cast<char*>(pos);
+        *dst_current = '\0'; 
+    }
+}
+
+
 ////////////////////////////////
 // Processfkt. for the Specifiers
 ////////////////////////////////
 
 bool DestAppender::process_c(const int* arg) {
+    const char* safePos = getDst_current();
     if(arg == nullptr) {
         return false;
     }
     // else //
-    return appendCharToDest(*arg);
+    if (appendCharToDest(*arg)) {
+        return true;
+    } else {
+        setDstToPos(safePos);
+        return false;
+    }
 }
 
 bool DestAppender::process_d(signed int arg) {
+    const char* safePos = getDst_current();
     bool success = true;
     unsigned int abs;
     if(arg < 0) {
@@ -59,10 +78,14 @@ bool DestAppender::process_d(signed int arg) {
         abs = arg;
     }
 
+    if(!success) {
+        setDstToPos(safePos);
+    }
     return success && process_u(abs);
 }
 
 bool DestAppender::process_u(unsigned int arg) {
+    const char* safePos = getDst_current();
     bool success = true;
     if(success) {
         const int buffer_length = 11;
@@ -89,10 +112,15 @@ bool DestAppender::process_u(unsigned int arg) {
             i--;
         }
     }
+
+    if(!success) {
+        setDstToPos(safePos);
+    }
     return success;
 }
 
 bool DestAppender::process_s(char* arg) {
+    const char* safePos = getDst_current();
     if(arg == nullptr) {
         return false;
     }
@@ -102,13 +130,17 @@ bool DestAppender::process_s(char* arg) {
         success = appendCharToDest(*arg);
         arg++;
     } while(success && !PrintfUtils::EOS(arg));
-
+    
+    if(!success) {
+        setDstToPos(safePos);
+    }
     return success;
 }
 
 const int int_length = 32; 
 
 bool DestAppender::process_b(signed int arg) {
+    const char* safePos = getDst_current();
     unsigned int uInt;
     //Handling of negative numbers
     if(arg < 0) {
@@ -135,7 +167,10 @@ bool DestAppender::process_b(signed int arg) {
         }
         mask = mask >> 1; // =: x/2
     }
-
+    
+    if(!success) {
+        setDstToPos(safePos);
+    }
     return success;
 }
 
@@ -148,6 +183,7 @@ const char hexSymbols[] = { '0','1','2','3',
 const int hexWidth = 4;
 
 bool DestAppender::process_x(signed int arg) {
+    const char* safePos = getDst_current();
     unsigned int uInt;
     //handle negative nr.
     if(arg < 0) {
@@ -175,7 +211,10 @@ bool DestAppender::process_x(signed int arg) {
         success = appendCharToDest(hexSymbols[nr]);
         mask = mask >> hexWidth;
     }
-
+    
+    if(!success) {
+        setDstToPos(safePos);
+    }
     return success;
 
 }
