@@ -47,6 +47,9 @@ arg_Val : Value;
 
 
 # Exercise 2
+
+## REMOVE printf()!!!
+
 Schreiben Sie eine eigene minimale printf Implementierung. Sie soll folgende Ausgabefunktionen erfüllen:
 - [x] %d für signed int
 - [x] %u für unsigned int
