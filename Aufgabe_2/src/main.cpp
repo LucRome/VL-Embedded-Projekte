@@ -1,5 +1,4 @@
 #include "Printf.h"
-#include <stdio.h>
 #include "DestAppender.h"
 
 int main() {
@@ -14,6 +13,5 @@ int main() {
 
     //char res[] = "-124, 32, FF, "; // Wrong type: interpreted as the needed Type -> evtl error
     
-    char* ret = Printf(dst, end, fmt, arg, arg2, arg3);
-    printf("dst: %s, ret: %s", dst, ret);    
+    Printf(dst, end, fmt, arg, arg2, arg3);
 }

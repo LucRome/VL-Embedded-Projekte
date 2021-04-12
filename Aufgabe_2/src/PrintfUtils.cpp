@@ -1,5 +1,4 @@
 #include "PrintfUtils.h"
-#include <stdio.h>
 
 namespace PrintfUtils {
 

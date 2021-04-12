@@ -145,7 +145,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Hello 12334";
             
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("two") {
@@ -155,7 +154,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Hello Carl, How are you.";
             
             Printf(dst, end, fmt, arg1, arg2);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
     }
@@ -166,7 +164,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "B: 0b1110111101011100";
             
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("two") {
@@ -175,7 +172,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Neg: 0b10000000000000000000000000000000";
             
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("three") {
@@ -184,7 +180,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Neg: 0b11111111111111111111111111111111";
                                     
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("four") {
@@ -193,7 +188,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Pos: 0b1111111111111111111111111111111";
             
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
     }
@@ -204,7 +198,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "X: 0xef5c";
             
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("two") {
@@ -213,7 +206,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Neg: 0x80000000";
             
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("three") {
@@ -222,7 +214,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Neg: 0xffffffff";
                                     
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("four") {
@@ -231,7 +222,6 @@ TEST_CASE("Printf", "[Printf]") {
             char result[] = "Pos: 0x7fffffff";
             
             Printf(dst, end, fmt, arg);
-            printf("%s == %s\n", dst, result);
             REQUIRE(strcmp(dst, result) == 0);
         }
     }
@@ -240,7 +230,6 @@ TEST_CASE("Printf", "[Printf]") {
         char result[] = "skip: %";
         
         Printf(dst, end, fmt);
-        printf("%s == %s\n", dst, result);
         REQUIRE(strcmp(dst, result) == 0);
     }
 }
@@ -252,9 +241,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
 
         char fmt[] = "ABCDEFGHI";
         char* res = Printf(dst, end, fmt);
-        printf("end: %c\n", *end);
-        printf("dst: %s\n", dst);
-        printf("%s == %s\n", res, fmt + 4);
         REQUIRE(strcmp(res, (fmt + 4)) == 0);
     }
     SECTION("standard 2") {
@@ -263,9 +249,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
 
         char fmt[] = "ABCDEFGH2";
         char* res = Printf(dst, end, fmt);
-        printf("end: %c\n", *end);
-        printf("fmt: %s\n", fmt);
-        printf("%s == %s\n", res, fmt + 8);
         REQUIRE(strcmp(res, (fmt + 8)) == 0);
     }
 
@@ -277,9 +260,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             char fmt[] = "AB%d";
             int arg = -12442;
             char* res = Printf(dst, end, fmt);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
         SECTION("%u") {
@@ -289,9 +269,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             char fmt[] = "AB%u";
             unsigned int arg = 12442;
             char* res = Printf(dst, end, fmt);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
         SECTION("%c") {
@@ -301,9 +278,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             char fmt[] = "AB%c";
             char arg = 'V';
             char* res = Printf(dst, end, fmt);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
         SECTION("%s") {
@@ -313,9 +287,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             char fmt[] = "AB%s";
             char arg[] = "Vasdagds";
             char* res = Printf(dst, end, fmt, arg);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
         SECTION("%x") {
@@ -325,9 +296,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             char fmt[] = "AB%x";
             int arg = 0xabcd;
             char* res = Printf(dst, end, fmt);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
         SECTION("%b") {
@@ -337,9 +305,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             char fmt[] = "AB%b";
             int arg = 0b11101010;
             char* res = Printf(dst, end, fmt);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
         SECTION("%%") {
@@ -349,9 +314,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             char fmt[] = "AB%%";
             char arg = 'V';
             char* res = Printf(dst, end, fmt);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
         SECTION("mixed") {
@@ -362,10 +324,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             int arg1 = 0x123;
             char arg2[] = "HASKdha";
             char* res = Printf(dst, end, fmt, arg1, arg2);
-            printf("dst: %s\n", dst);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 9);
             REQUIRE(strcmp(res, (fmt + 9)) == 0);
         }
         SECTION("%%") {
@@ -375,9 +333,6 @@ TEST_CASE("Printf: out of bounds", "[Printf]") {
             char fmt[] = "AB%%";
             char arg = 'V';
             char* res = Printf(dst, end, fmt);
-            printf("end: %c\n", *end);
-            printf("fmt: %s\n", fmt);
-            printf("%s == %s\n", res, fmt + 2);
             REQUIRE(strcmp(res, (fmt + 2)) == 0);
         }
     }
@@ -396,7 +351,6 @@ TEST_CASE("wrong arguments") {
         char res[] = "-124, 32, 0xff, "; // Missing arg -> print nothing
         
         char* ret = Printf(dst, end, fmt, arg, arg2, arg3);
-        printf("dst: %s", dst);
         REQUIRE(strcmp(dst, res) == 0);
     }
 }
