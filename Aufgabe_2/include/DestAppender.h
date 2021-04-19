@@ -6,7 +6,8 @@
  * @brief abstraction for the Destionation
  * (handles the Writing of chars to dst)
  */
-class DestAppender {
+class DestAppender
+{
 public:
     /**
      * @brief Construct a new Dest Appender object
@@ -14,7 +15,7 @@ public:
      * @param dst Destination
      * @param end End of Destination
      */
-    DestAppender(char* dst, const void* end);
+    DestAppender(char *dst, const void *end);
 
     /**
      * @brief appends a single char to the dst
@@ -23,7 +24,7 @@ public:
      * @return true char is appended
      * @return false char can't be appended
      */
-    bool appendCharToDest(const char& charToAppend);
+    bool appendCharToDest(const char &charToAppend);
     /**
      * @brief to catch errors (e.g. in constructor) 
      */
@@ -36,33 +37,29 @@ public:
     /**
      * @brief Get the pointer to the start of dst
      */
-    const char* getDst_start() const;
-    const char* getDst_current() const;
+    const char *getDst_start() const;
+    const char *getDst_current() const;
 
-    void setDstToPos(const char* pos);
+    void setDstToPos(const char *pos);
 
-    /////////////// Functions /////////////////
-    bool process_c(const int* arg);
+    /////////////// Functions for specifiers /////////////////
+    bool process_c(const int *arg);
     bool process_d(signed int arg);
     bool process_u(unsigned int arg);
-    bool process_s(char* arg);
+    bool process_s(char *arg);
     bool process_b(signed int arg);
     bool process_x(signed int arg);
 
 private:
-    /////////////// Fields ////////////////////
-    template<typename T>
-    bool process_intType(T arg);
-
     /**
      * @brief start of dst
      * 
      */
-    const char* dst_start;
+    const char *dst_start;
     /**
      * @brief always points to current '\0' of dst
      * 
      */
-    char* dst_current;
-    const void* end;
+    char *dst_current;
+    const void *end;
 };
