@@ -213,7 +213,8 @@ TEST_CASE("Printf", "[Printf]") {
             signed int arg = -1;
             char result[] = "Neg: 0xffffffff";
                                     
-            Printf(dst, end, fmt, arg);
+            char* ret = Printf(dst, end, fmt, arg);
+            REQUIRE(*ret == '\0');
             REQUIRE(strcmp(dst, result) == 0);
         }
         SECTION("four") {
