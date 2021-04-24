@@ -4,6 +4,8 @@ PreAllocString<size> varName;
 #include <cstddef>
 #include <iostream>
 
+// TODO: maybe use abstract class to prevent code Bloat with Template 
+
 template<int N>
 class PreAllocString {
 private:
