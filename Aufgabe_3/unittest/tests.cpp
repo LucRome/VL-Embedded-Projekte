@@ -93,7 +93,7 @@ TEST_CASE("Error") {
             char rhs[] = "ABCDEF";
             char * const rhs_ptr = rhs;
             pas = rhs_ptr;
-            int i = pas.size;
+            int i = pas.SizeOf();
             printf("size: %i", i);
             printf("%s", pas.operator const char *());
             REQUIRE(pas.GetLength() == 0);

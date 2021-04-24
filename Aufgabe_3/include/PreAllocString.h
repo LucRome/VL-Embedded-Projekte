@@ -1,5 +1,5 @@
-#define CREATE(varName , size) char varName##_buf[size + 1] = {0};\
-PreAllocString<size> varName(size, varName##_buf);
+#define CREATE(varName , size)\
+PreAllocString<size> varName;
 
 #include <cstddef>
 #include <iostream>
@@ -7,9 +7,10 @@ PreAllocString<size> varName(size, varName##_buf);
 template<int N>
 class PreAllocString {
 private:
-    const char* buffer_start;
+    const char buffer_start[N+1] = {0};
     const char* buffer_end;
     char* buffer_cur; // always points towards current '\\0'
+    const size_t size;
 
     // const size_t size;
 
@@ -27,17 +28,11 @@ private:
     }
     
 public:
-    const size_t size;
 
     // constructor
-    constexpr PreAllocString(const size_t& size, char* buffer)
-        :buffer_start(buffer), buffer_end(buffer + size + 1), buffer_cur(buffer)
-        ,size(size)
+    constexpr PreAllocString()
+        :buffer_end(buffer_start + N + 1) ,buffer_cur(const_cast<char*>(buffer_start)), size(N)
     {
-        // check if buffer Pointer valid
-        if(!buffer) {
-            return;
-        }
         // else
         *buffer_cur = '\0';
     }
