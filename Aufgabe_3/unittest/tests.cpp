@@ -19,9 +19,7 @@ TEST_CASE("Correct") {
     SECTION("operator=") {
         {
             printf("operator=");
-            char pas_buf[7] = {0};
-            PreAllocString pas(7, pas_buf);
-
+            CREATE(pas, 7);
             char rhs = 'a';
             pas=rhs;
             printf("pas: %s", pas.operator const char *());
