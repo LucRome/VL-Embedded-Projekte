@@ -2,6 +2,7 @@
 
 # include "PreAllocString.h"
 #include <cstring>
+#include <climits>
 
 TEST_CASE("Correct") {
     SECTION("Macro + operator+=(char)") {
@@ -125,6 +126,296 @@ TEST_CASE("Error") {
             for(int i = 0; i < 8; i++) { //leaves no place for '\0'
                 REQUIRE(pas[i] == 0);
             }
+        }
+    }
+}
+
+TEST_CASE("AddFormat") {
+    CREATE(pas, 80);
+
+    SECTION("char") {
+        char fmt[] = "Hello %c";
+        char arg = 'A';
+        char result[] = "Hello A";
+        
+        pas.AddFormat(fmt, arg);
+        REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+        pas.Empty();
+    }
+
+    SECTION("signed int") {
+        SECTION("standard") {
+            char fmt[] = "Hello %d";
+            signed int arg = -12334;
+            char result[] = "Hello -12334";
+            
+            pas.AddFormat(fmt, arg);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+            
+            pas.Empty();
+        }
+        SECTION("MAX") {
+            char fmt[] = "Hello %d";
+            signed int arg = INT_MAX;
+            char result[] = "Hello 2147483647";
+            
+            pas.AddFormat(fmt, arg);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+    }
+    SECTION("unsigned int") {
+        SECTION("standard") {
+            char fmt[] = "Hello %u";
+            unsigned int arg = 12334;
+            char result[] = "Hello 12334";
+            
+            pas.AddFormat(fmt, arg);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+        SECTION("MAX") {
+            char fmt[] = "Hello %u";
+            signed int arg = UINT_MAX;
+            char result[] = "Hello 4294967295";
+            
+            pas.AddFormat(fmt, arg);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+    }
+    SECTION("string") {
+        SECTION("one") {
+            char fmt[] = "Hello %s";
+            char arg[] = "12334";
+            char result[] = "Hello 12334";
+            
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+        SECTION("two") {
+            char fmt[] = "Hello %s How are %s";
+            char arg1[] = "Carl,";
+            char arg2[] = "you.";
+            char result[] = "Hello Carl, How are you.";
+            
+            pas.AddFormat(fmt, arg1, arg2);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+    }
+    SECTION("binary") {
+        SECTION("one") {
+            char fmt[] = "B: %b";
+            signed int arg = 61276;
+            char result[] = "B: 0b1110111101011100";
+            
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+        SECTION("two") {
+            char fmt[] = "Neg: %b";
+            signed int arg = INT_MIN; //-2.147.483.648
+            char result[] = "Neg: 0b10000000000000000000000000000000";
+            
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+        SECTION("three") {
+            char fmt[] = "Neg: %b";
+            signed int arg = -1;
+            char result[] = "Neg: 0b11111111111111111111111111111111";
+                                    
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+        SECTION("four") {
+            char fmt[] = "Pos: %b";
+            signed int arg = INT_MAX; // 2147483647
+            char result[] = "Pos: 0b1111111111111111111111111111111";
+            
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+    }
+    SECTION("hex") {
+        SECTION("one") {
+            char fmt[] = "X: %x";
+            signed int arg = 61276;
+            char result[] = "X: 0xef5c";
+            
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+        SECTION("two") {
+            char fmt[] = "Neg: %x";
+            signed int arg = INT_MIN; //-2.147.483.648
+            char result[] = "Neg: 0x80000000";
+            
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+        SECTION("three") {
+            char fmt[] = "Neg: %x";
+            signed int arg = -1;
+            char result[] = "Neg: 0xffffffff";
+                                    
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+        SECTION("four") {
+            char fmt[] = "Pos: %x";
+            signed int arg = INT_MAX; // 2147483647
+            char result[] = "Pos: 0x7fffffff";
+            
+            pas.AddFormat(fmt, arg);
+            printf("%s == %s\n", pas.operator const char *(), result);
+            REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+            pas.Empty();
+        }
+    }
+    SECTION("skip") {
+        char fmt[] = "skip: %%";
+        char result[] = "skip: %";
+        
+        pas.AddFormat(fmt);
+        printf("%s == %s\n", pas.operator const char *(), result);
+        REQUIRE(strcmp(pas.operator const char *(), result) == 0);
+
+        pas.Empty();
+    }
+}
+
+TEST_CASE("AddFormat: out of bounds", "[Printf]") {
+    SECTION("standard 1") {
+        CREATE(pas, 4);
+
+        char fmt[] = "ABCDEFGHI";
+        pas.AddFormat(fmt);
+        
+        REQUIRE(pas.GetLength() == 0);
+    }
+    SECTION("standard 2") {
+        CREATE(pas, 8);
+
+        char fmt[] = "ABCDEFGH2";
+        pas.AddFormat(fmt);
+        
+       REQUIRE(pas.GetLength() == 0);
+    }
+
+    SECTION("with Specifiers") {
+        SECTION("%d") {
+            CREATE(pas, 3);
+
+            char fmt[] = "AB%d";
+            int arg = -12442;
+            pas.AddFormat(fmt);
+            
+            REQUIRE(pas.GetLength() == 0);
+        }
+        SECTION("%u") {
+            CREATE(pas, 3);
+
+            char fmt[] = "AB%u";
+            unsigned int arg = 12442;
+            pas.AddFormat(fmt);
+            
+            REQUIRE(pas.GetLength() == 0);
+        }
+        SECTION("%c") {
+            CREATE(pas, 2);
+
+            char fmt[] = "AB%c";
+            char arg = 'V';
+            pas.AddFormat(fmt);
+            
+            REQUIRE(pas.GetLength() == 0);
+        }
+        SECTION("%s") {
+            CREATE(pas, 3);
+
+            char fmt[] = "AB%s";
+            char arg[] = "Vasdagds";
+            pas.AddFormat(fmt, arg);
+            
+            REQUIRE(pas.GetLength() == 0);
+        }
+        SECTION("%x") {
+            CREATE(pas, 3);
+            char fmt[] = "AB%x";
+            int arg = 0xabcd;
+            pas.AddFormat(fmt);
+            
+            REQUIRE(pas.GetLength() == 0);
+        }
+        SECTION("%b") {
+            CREATE(pas, 3);
+
+            char fmt[] = "AB%b";
+            int arg = 0b11101010;
+            pas.AddFormat(fmt);
+            
+            REQUIRE(pas.GetLength() == 0);
+        }
+        SECTION("%%") {
+            CREATE(pas, 2);
+
+            char fmt[] = "AB%%";
+            char arg = 'V';
+            pas.AddFormat(fmt);
+            
+            REQUIRE(pas.GetLength() == 0);
+        }
+        SECTION("mixed") {
+            CREATE(pas, 16);
+
+            char fmt[] = "12 %x 79 %s";
+            int arg1 = 0x123;
+            char arg2[] = "HASKdha";
+            pas.AddFormat(fmt, arg1, arg2);
+            
+            REQUIRE(pas.GetLength() == 0);
+        }
+        SECTION("%%") {
+            CREATE(pas, 2)
+
+            char fmt[] = "AB%%";
+            char arg = 'V';
+            pas.AddFormat(fmt);
+            
+            REQUIRE(pas.GetLength() == 0);
         }
     }
 }

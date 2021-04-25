@@ -1,6 +1,11 @@
+#pragma once
+
 #define CREATE(varName , size)\
 PreAllocString<size> varName;
 
+#include "Utils.h"
+
+#include <stdarg.h>
 #include <cstddef>
 #include <iostream>
 
@@ -17,7 +22,7 @@ private:
     // const size_t size;
 
     bool writeChar(const char& chr) {
-        printf("write char: %c \n", chr);
+        printf("write char: %c at pos: %i\n", chr, GetLength());
         if(buffer_cur == buffer_end || GetLength() + 1 > size) {
             return false;
         } 
@@ -145,7 +150,42 @@ public:
         return *this;
     }
 
-    // void AddFormat ( const char* format , ... ); TODO
+    void AddFormat ( const char* format , ... ) {
+        if(format) {
+            printf("\nadd Format: %s\n current buffer: %i", format, buffer_cur);
+            //access "..."
+            va_list params;
+            va_start(params, format);
+
+            char* dst = buffer_cur;
+            const char* end = buffer_end;
+            while(!Utils::EOS(format) && dst) {
+                if(Utils::isSpecifier(format)) {
+                    dst = Utils::processSpecifier(params, Utils::getSpecifierType(format), dst, end);
+                    format += 2;
+                } 
+                else {
+                    if(Utils::writeChar(dst,end,*format)) {
+                        dst++;
+                        format++;
+                    } else {
+                        printf("Error in Write, PreAllocString");
+                        dst = nullptr;
+                    }
+                }
+            }
+            va_end(params);
+
+            if(!dst) {
+                //Error
+                this->Empty();
+            } else {
+                buffer_cur = dst;
+                printf("\n length: %i", GetLength());
+            }
+        }
+    }
+
     void AddWhiteSpace () {
         // no possibility to communicate Error -> no need to catch
         writeChar(' ');
