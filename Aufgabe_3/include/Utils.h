@@ -1,6 +1,8 @@
 #pragma once
 #include <stdarg.h>
 
+class PreAllocString;
+
 namespace Utils {
     // char* writeFormat(char* dst, const void* end, const char* fmt, va_list params);
 
@@ -19,7 +21,7 @@ namespace Utils {
      * @param ptr_char ptr to char
      * @return true ptr_char == '\0'
      */
-    bool EOS(const char* ptr_char);
+    bool EOS(const char& ptr_char);
 
     enum class SpecifierType {
         SignedInt, UnsignedInt, Char, String, Hexa, Binary, SkipFormat ,None
@@ -33,16 +35,14 @@ namespace Utils {
      */
     SpecifierType getSpecifierType(const char* fmt);
 
-    bool writeChar(char* dst, const void* end, char arg);
-
-    char* processSpecifier(va_list& params, const SpecifierType specType, char* dst, const void* end);
+    bool processSpecifier(va_list& params, const SpecifierType specType, PreAllocString& pas);
 
     /////////////// Functions /////////////////
-    char* process_c(const int* arg, char* dst, const void* end);
-    char* process_d(signed int arg, char* dst, const void* end);
-    char* process_u(unsigned int arg, char* dst, const void* end);
-    char* process_s(char* arg, char* dst, const void* end);
-    char* process_b(signed int arg, char* dst, const void* end);
-    char* process_x(signed int arg, char* dst, const void* end);
+    bool process_c(const int* arg, PreAllocString& pas);
+    bool process_d(signed int arg, PreAllocString& pas);
+    bool process_u(unsigned int arg, PreAllocString& pas);
+    bool process_s(char* arg, PreAllocString& pas);
+    bool process_b(signed int arg, PreAllocString& pas);
+    bool process_x(signed int arg, PreAllocString& pas);
 
 }

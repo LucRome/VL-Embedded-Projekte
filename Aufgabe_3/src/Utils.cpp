@@ -2,6 +2,7 @@
 #include <climits>
 #include <stdio.h>
 
+#include "PreAllocString.h"
 
 bool Utils::isSpecifier(const char* fmt) {
     if(fmt == nullptr) {
@@ -12,8 +13,8 @@ bool Utils::isSpecifier(const char* fmt) {
     }
 }
 
-bool Utils::EOS(const char* ptr_char) {
-    return (ptr_char != nullptr) && (*ptr_char == '\0');
+bool Utils::EOS(const char& ptr_char) {
+    return ptr_char == '\0';
 }
 
 Utils::SpecifierType Utils::getSpecifierType(const char* fmt) {
@@ -44,58 +45,36 @@ Utils::SpecifierType Utils::getSpecifierType(const char* fmt) {
     }
 }
 
-bool Utils::writeChar(char* dst, const void* end, char arg) {
-    if(!dst || !end || dst + 1 == end) {
-        return false;
-    }
-    //Else
-    *dst = arg;
-    return true;
-}
-
 
 ////////////////////////////////
 // Processfkt. for the Specifiers
 ////////////////////////////////
 
-char* Utils::process_c(const int* arg, char* dst, const void* end) {
-    if(!arg || !dst || !end) {
-        return nullptr;
+bool Utils::process_c(const int* arg, PreAllocString& pas) {
+    if(!arg) {
+        return false;
     }
     // else //
-    if (writeChar(dst, end, *arg)) {
-        return dst + 1;
-    } else {
-        return nullptr;
-    }
+    return pas.writeChar(*arg);
 }
 
-char* Utils::process_d(signed int arg, char* dst, const void* end) {
-    if(!dst|| !end) {
-        return nullptr;
-    }
-    
+bool Utils::process_d(signed int arg, PreAllocString& pas) {    
     bool success = true;
     unsigned int abs;
     if(arg < 0) {
-        success = writeChar(dst, end, '-');
-        dst++;
+        success = pas.writeChar('-');
         abs = arg * (-1);
     } else {
         abs = arg;
     }
     if(success) {
-        return process_u(abs, dst, end);
+        return process_u(abs, pas);
     } else {
-        return nullptr;
+        return !success;
     }
 }
 
-char* Utils::process_u(unsigned int arg, char* dst, const void* end) {
-    if(!dst|| !end) {
-        return nullptr;
-    }
-
+bool Utils::process_u(unsigned int arg, PreAllocString& pas) {
     bool success = true;
     const int buffer_length = 11;
     char buffer[buffer_length] = { 0 };
@@ -117,47 +96,31 @@ char* Utils::process_u(unsigned int arg, char* dst, const void* end) {
 
     //write rest to dest
     while(success && i >= 0) {
-        success = writeChar(dst, end, buffer[i] + '0');
-        dst++;
+        success = pas.writeChar(buffer[i] + '0');
         i--;
     }
 
-    if(!success) {
-        return nullptr;
-    }
-    return dst;
+    return success;
 }
 
-char* Utils::process_s(char* arg, char* dst, const void* end) {
-    printf("Utils::process_s: dst=%i",dst);
-    if(!dst|| !end || !arg) {
-        return nullptr;
+bool Utils::process_s(char* arg, PreAllocString& pas) {
+    if(!arg) {
+        return false;
     }
     // else //
     bool success;
     do {
         printf("\nprocess_s: write Char: %c", *arg);
-        success = writeChar(dst, end, *arg);
-        dst++;
+        success = pas.writeChar(*arg);
         arg++;
-    } while(success && !EOS(arg));
-    
-    if(!success) {
-        printf("\nError in WriteChar, Utils\n");
-        return nullptr;
-    }
-    printf("Utils::process_s return: dst=%i",dst);
+    } while(success && !EOS(*arg));
 
-    return dst;
+    return success;
 }
 
 const int int_length = 32; 
 
-char* Utils::process_b(signed int arg, char* dst, const void* end) {
-    if(!dst|| !end) {
-        return nullptr;
-    }
-
+bool Utils::process_b(signed int arg, PreAllocString& pas) {
     unsigned int uInt;
     //Handling of negative numbers
     if(arg < 0) {
@@ -176,27 +139,19 @@ char* Utils::process_b(signed int arg, char* dst, const void* end) {
 
     bool success = true;
     //write prefix (0b)
-    success = writeChar(dst, end, '0');
-    dst++;
-    success = success && writeChar(dst, end, 'b');
-    dst++;
+    success = pas.writeChar('0') && pas.writeChar('b');
 
     // write 0/1 to dst
     while (success && (mask > 0)) {
         if((uInt & mask) > 0) { //Bit set -> write 1
-            success = writeChar(dst, end, '1');
-            dst++;
+            success = pas.writeChar('1');
         } else { //write 0
-            success = writeChar(dst, end, '0');
-            dst++;
+            success = pas.writeChar('0');
         }
         mask = mask >> 1; // =: x/2
     }
     
-    if(!success) {
-        return nullptr;
-    }
-    return dst;
+    return success;
 }
 
 const char hexSymbols[] = { '0','1','2','3',
@@ -207,11 +162,7 @@ const char hexSymbols[] = { '0','1','2','3',
 
 const int hexWidth = 4;
 
-char* Utils::process_x(signed int arg, char* dst, const void* end) {
-    if(!dst|| !end) {
-        return nullptr;
-    }
-
+bool Utils::process_x(signed int arg, PreAllocString& pas) {
     unsigned int uInt;
     //handle negative nr.
     if(arg < 0) {
@@ -233,76 +184,60 @@ char* Utils::process_x(signed int arg, char* dst, const void* end) {
     bool success = true;
 
     // write prefix (0x)
-    success = writeChar(dst, end, '0');
-    dst++;
-    success = success && writeChar(dst, end, 'x');
-    dst++;
+    success = pas.writeChar('0') && pas.writeChar('x');
 
     // write hexSymbol to dst
     while (success && (mask > 0)) {
         rshifts -= hexWidth;
         int nr = (uInt & mask) >> rshifts;
-        success = writeChar(dst, end, hexSymbols[nr]);
-        dst++;
+        success = pas.writeChar(hexSymbols[nr]);
         mask = mask >> hexWidth;
     }
     
-    if(!success) {
-        return nullptr;
-    }
-    return dst;
-
+    return success;
 }
 
 
 
-char* Utils::processSpecifier(va_list& params, const SpecifierType specType, char* dst, const void* end) {
-    if(!dst|| !end) {
-        return nullptr;
-    }
-    
-    char* ret;
+bool Utils::processSpecifier(va_list& params, const SpecifierType specType, PreAllocString& pas) {  
+    bool ret;
     switch (specType)
         {
         case SpecifierType::Binary: {
             signed int i = va_arg(params, signed int);
-            ret = process_b(i, dst, end);
+            ret = process_b(i, pas);
             break;
         }
         case SpecifierType::Char: {
             int i = va_arg(params, int);
-            ret = process_c(&i, dst, end);
+            ret = process_c(&i, pas);
             break;
         }
         case SpecifierType::Hexa: {
             signed int i = va_arg(params, signed int);
-            ret = process_x(i, dst, end);
+            ret = process_x(i, pas);
             break;
         }
         case SpecifierType::SignedInt: {
             signed int i = va_arg(params, signed int);
-            ret = process_d(i, dst, end);
+            ret = process_d(i, pas);
             break;
         }
         case SpecifierType::String: {
             char* arg = va_arg(params, char*);
-            ret = process_s(arg, dst, end);
+            ret = process_s(arg, pas);
             break;
         }
         case SpecifierType::UnsignedInt: {
             unsigned int i = va_arg(params, unsigned int);
-            ret = process_u(i, dst, end);
+            ret = process_u(i, pas);
             break;
         }
         case SpecifierType::SkipFormat:
-            if(writeChar(dst, end, '%')) {
-                ret = dst++;
-            } else {
-                ret = nullptr;
-            }
+            ret = pas.writeChar('%');
             break;
         default:
-            ret = nullptr;
+            ret = false;
             break;
         }
     return ret;

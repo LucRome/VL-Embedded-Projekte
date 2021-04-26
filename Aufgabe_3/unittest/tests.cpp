@@ -8,6 +8,7 @@ TEST_CASE("Correct") {
     SECTION("Macro + operator+=(char)") {
         CREATE(pas, 20);
 
+        std::cout << "\n\npas.SizeOf(): " << pas.SizeOf() << std::endl << std::endl;
         // REQUIRE(pas.SizeOf() == 20);
         REQUIRE(pas.GetLength() == 0);
         for(int i = 0; i < 19; i++) {
