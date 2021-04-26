@@ -43,11 +43,7 @@ size_t PreAllocString::GetLength() const {
 /* Empty the string , set length field to zero */
 void PreAllocString::Empty() {
     // Empty string
-    while(buffer_cur > buffer_start) {
-        *buffer_cur = '\0';
-        buffer_cur--;
-        printf("buffer empty: size = %i", GetLength());
-    }
+    buffer_cur = const_cast<char*>(buffer_start);
     // also reset start
     *buffer_cur = '\0';
 }
