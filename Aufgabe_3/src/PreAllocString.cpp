@@ -1,11 +1,9 @@
 #include "PreAllocString.h"
 
 bool PreAllocString::writeChar(const char& chr) {
-    printf("write char: %c at pos: %i\n", chr, GetLength());
     if(GetLength() + 1 > SizeOf()) {
         return false;
     }
-    std::cout<< "length: " << GetLength() << std::endl; 
     // Else
     *buffer_cur = chr;
     ++buffer_cur;
@@ -26,7 +24,6 @@ PreAllocString::PreAllocString(const size_t _size, char* _buffer_start)
 // Access Operator
 const char & PreAllocString::operator [] (const int idx) {
     size_t idx_d = idx;
-    std::cout << "operator[idx], idx=" << idx_d << std::endl;
     if(idx_d > this->SizeOf()- 1) {
         // Error -> return '\0'
         return *buffer_cur;
@@ -85,7 +82,6 @@ PreAllocString& PreAllocString::operator =( char * const rhs) {
 
 PreAllocString& PreAllocString::operator +=(char rhs) {
     if(!writeChar(rhs)) {
-        printf("\n\n operator += char: write error");
         //Error
         this->Empty();
     }
@@ -96,7 +92,6 @@ PreAllocString& PreAllocString::operator +=(char rhs) {
 PreAllocString& PreAllocString::operator +=(char const * rhs) {
     if(!rhs) {
         //error
-        printf("Empty Pointer!! \n");
         this->Empty();
         return *this;
     }
@@ -115,7 +110,6 @@ PreAllocString& PreAllocString::operator +=(char const * rhs) {
 
 void PreAllocString::AddFormat ( const char* format , ... ) {
     if(format) {
-        printf("\nadd Format: %s\n current buffer: %i", format, buffer_cur);
         //access "..."
         va_list params;
         va_start(params, format);

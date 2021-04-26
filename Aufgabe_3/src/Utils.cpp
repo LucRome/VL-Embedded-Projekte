@@ -1,6 +1,5 @@
 #include "Utils.h"
 #include <climits>
-#include <stdio.h>
 
 #include "PreAllocString.h"
 
@@ -110,7 +109,6 @@ bool Utils::process_s(char* arg, PreAllocString& pas) {
     // else //
     bool success;
     do {
-        printf("\nprocess_s: write Char: %c", *arg);
         success = pas.writeChar(*arg);
         arg++;
     } while(success && !EOS(*arg));

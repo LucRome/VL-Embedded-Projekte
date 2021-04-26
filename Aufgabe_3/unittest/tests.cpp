@@ -4,15 +4,22 @@
 #include <cstring>
 #include <climits>
 
-TEST_CASE("Assignment") {
-    
+TEST_CASE("Assignments") {
+    CREATE(pas1, 20);
+
+    pas1 = "Hello";
+    PreAllocString& pas2 = pas1;
+    PreAllocString pas3 = pas1;
+
+    pas2 += "45";
+
+    REQUIRE(strcmp(pas1.operator const char *(), pas2.operator const char *()) == 0);
+    REQUIRE(strcmp(pas1.operator const char *(), pas3.operator const char *()) == 0);
 }
 
 TEST_CASE("Correct") {
     SECTION("Macro + operator+=(char)") {
         CREATE(pas, 20);
-
-        std::cout << "\n\npas.SizeOf(): " << pas.SizeOf() << std::endl << std::endl;
         // REQUIRE(pas.SizeOf() == 20);
         REQUIRE(pas.GetLength() == 0);
         for(int i = 0; i < 19; i++) {
@@ -24,16 +31,13 @@ TEST_CASE("Correct") {
     }
     SECTION("operator=") {
         {
-            printf("operator=");
             CREATE(pas, 7);
             char rhs = 'a';
             pas=rhs;
-            printf("pas: %s", pas.operator const char *());
             REQUIRE(pas[0] == rhs);
             REQUIRE(pas[1] == '\0');
         }
         {
-            printf("operator= , 2");
             CREATE(pas, 7);
 
             char rhs[] = "ABCDEF";
@@ -42,13 +46,11 @@ TEST_CASE("Correct") {
             REQUIRE(strcmp(pas.operator const char *(), rhs) == 0);
         }
         {
-            printf("operator= , 3");
 
             CREATE(pas, 7);
             
             char rhs[] = "ABCDEF";
             char * const rhs_ptr = rhs;
-            printf("operator= , 4");
 
             pas=rhs_ptr;
             REQUIRE(strcmp(pas.operator const char *(), rhs) == 0);
@@ -56,7 +58,6 @@ TEST_CASE("Correct") {
     }
 
     SECTION("operator+=, addWhiteSpace") {
-        printf("\n\n operator+=, addWhiteSpace \n");
         CREATE(pas, 10);
         {
             char res[] = "aa";
@@ -74,9 +75,7 @@ TEST_CASE("Correct") {
             char res[] = "aa ABCDE";
             char rhs[] = "ABCDE";
             char const * rhs_ptr = rhs;
-            printf("\n += %s \n", rhs_ptr);
             pas += rhs_ptr;
-            printf("| %s |", pas.operator const char *());
             REQUIRE(strcmp(pas.operator const char *(), res) == 0);
         }
     }
@@ -86,7 +85,6 @@ TEST_CASE("Error") {
     SECTION("operator=") {
         CREATE(pas, 5);
         {
-            printf("\n operator=, 1\n");
             char rhs[] = "ABCDEFG";
             const char * rhs_ptr = rhs;
             pas = rhs_ptr;
@@ -98,8 +96,6 @@ TEST_CASE("Error") {
             char * const rhs_ptr = rhs;
             pas = rhs_ptr;
             int i = pas.SizeOf();
-            printf("size: %i", i);
-            printf("%s", pas.operator const char *());
             REQUIRE(pas.GetLength() == 0);
             REQUIRE(pas[0] == '\0');
         }
@@ -192,7 +188,6 @@ TEST_CASE("AddFormat") {
             char result[] = "Hello 12334";
             
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -204,7 +199,6 @@ TEST_CASE("AddFormat") {
             char result[] = "Hello Carl, How are you.";
             
             pas.AddFormat(fmt, arg1, arg2);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -217,7 +211,6 @@ TEST_CASE("AddFormat") {
             char result[] = "B: 0b1110111101011100";
             
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -228,7 +221,6 @@ TEST_CASE("AddFormat") {
             char result[] = "Neg: 0b10000000000000000000000000000000";
             
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -239,7 +231,6 @@ TEST_CASE("AddFormat") {
             char result[] = "Neg: 0b11111111111111111111111111111111";
                                     
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -250,7 +241,6 @@ TEST_CASE("AddFormat") {
             char result[] = "Pos: 0b1111111111111111111111111111111";
             
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -263,7 +253,6 @@ TEST_CASE("AddFormat") {
             char result[] = "X: 0xef5c";
             
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -274,7 +263,6 @@ TEST_CASE("AddFormat") {
             char result[] = "Neg: 0x80000000";
             
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -285,7 +273,6 @@ TEST_CASE("AddFormat") {
             char result[] = "Neg: 0xffffffff";
                                     
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -296,7 +283,6 @@ TEST_CASE("AddFormat") {
             char result[] = "Pos: 0x7fffffff";
             
             pas.AddFormat(fmt, arg);
-            printf("%s == %s\n", pas.operator const char *(), result);
             REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
             pas.Empty();
@@ -307,7 +293,6 @@ TEST_CASE("AddFormat") {
         char result[] = "skip: %";
         
         pas.AddFormat(fmt);
-        printf("%s == %s\n", pas.operator const char *(), result);
         REQUIRE(strcmp(pas.operator const char *(), result) == 0);
 
         pas.Empty();

@@ -8,7 +8,6 @@ PreAllocString varName(size, varName##_buf);
 
 #include <stdarg.h>
 #include <cstddef>
-#include <iostream>
 
 // TODO: maybe use abstract class to prevent code Bloat with Template 
 
