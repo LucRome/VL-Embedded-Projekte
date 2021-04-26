@@ -14,8 +14,8 @@ bool PreAllocString::writeChar(const char& chr) {
     return true;
 }
 
-PreAllocString::PreAllocString(const size_t size, char* buffer_start)
-    :buffer_start(buffer_start), buffer_end(buffer_start + SizeOf()+ 1) ,buffer_cur(const_cast<char*>(buffer_start)), size(size)
+PreAllocString::PreAllocString(const size_t _size, char* _buffer_start)
+    :buffer_start(_buffer_start) ,buffer_cur(_buffer_start), size(_size)
 {
     if(!buffer_start) {
         return;

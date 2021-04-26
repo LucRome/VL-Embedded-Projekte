@@ -4,6 +4,10 @@
 #include <cstring>
 #include <climits>
 
+TEST_CASE("Assignment") {
+    
+}
+
 TEST_CASE("Correct") {
     SECTION("Macro + operator+=(char)") {
         CREATE(pas, 20);
@@ -87,9 +91,7 @@ TEST_CASE("Error") {
             const char * rhs_ptr = rhs;
             pas = rhs_ptr;
             REQUIRE(pas.GetLength() == 0);
-            for(int i = 0; i < 5; i++) {
-                REQUIRE(pas[i] == '\0');
-            }
+            REQUIRE(pas[0] == '\0');
         }
         {
             char rhs[] = "ABCDEF";
@@ -99,9 +101,7 @@ TEST_CASE("Error") {
             printf("size: %i", i);
             printf("%s", pas.operator const char *());
             REQUIRE(pas.GetLength() == 0);
-            for(int i = 0; i < 5; i++) {
-                REQUIRE(pas[i] == 0);
-            }
+            REQUIRE(pas[0] == '\0');
         }
     }
     SECTION("operator+=") {
@@ -111,9 +111,7 @@ TEST_CASE("Error") {
                 pas += 'a';
             }
             REQUIRE(pas.GetLength() == 0);
-            for(int i = 0; i < 6; i++) { //leaves no place for '\0'
-                REQUIRE(pas[i] == 0);
-            }
+            REQUIRE(pas[0] == '\0');
         }
         {
             CREATE(pas, 8);
@@ -124,9 +122,7 @@ TEST_CASE("Error") {
             pas += rhs_ptr;
             pas += rhs2_ptr;
             REQUIRE(pas.GetLength() == 0);
-            for(int i = 0; i < 8; i++) { //leaves no place for '\0'
-                REQUIRE(pas[i] == 0);
-            }
+            REQUIRE(pas[0] == '\0');
         }
     }
 }

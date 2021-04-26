@@ -15,15 +15,14 @@ PreAllocString varName(size, varName##_buf);
 class PreAllocString {
 private:
     const char* buffer_start;
-    const char* buffer_end;
     char* buffer_cur; // always points towards current '\\0'
-    const size_t size; //Const ->Problem
+    size_t size; //Const -> Problem mit PreAllocString& operator=(PreAllocString)
     
 public:
     bool writeChar(const char& chr);
 
     // constructor
-    PreAllocString(const size_t size, char* buffer_start);
+    PreAllocString(const size_t _size, char* _buffer_start);
     // Convert Functions
     operator const char *() const { return buffer_start; }
     operator const void *() const { return buffer_start; }
