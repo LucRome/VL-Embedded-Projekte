@@ -1,5 +1,7 @@
 bin
 Annotations
-Tests
+Debug
 .vscode/launch.json
 .vscode/settings.json
+*.TMP
+.vs
